@@ -4,7 +4,11 @@ from datetime import datetime
 from os.path import join
 from time import sleep
 from os import _exit
-from config import LOGS_DIRECTORY_PATH, MICROPHONE_INTERVAL, MICROPHONE_RECORDINGS_PER_EMAIL
+from config import (
+    LOGS_DIRECTORY_PATH,
+    MICROPHONE_INTERVAL,
+    MICROPHONE_RECORDINGS_PER_EMAIL,
+)
 from utils.tools import log, get_timestamp
 
 
@@ -21,7 +25,7 @@ class MicrophoneLogger:
 
     def handle_counter(self):
         if self.counter >= self.counter_max:
-            pass # email logic here
+            pass  # email logic here
 
     def record(self):
         recording = rec(
@@ -32,26 +36,32 @@ class MicrophoneLogger:
         )
         wait()
         write(
-            join(self.logs_directory_path, f"microphone_{get_timestamp()}.wav"), self.freq, recording
+            join(self.logs_directory_path, f"microphone_{get_timestamp()}.wav"),
+            self.freq,
+            recording,
         )
 
-
     def run(self):
-        while self.running:
-            self.record()
-            self.counter += 1
-            self.handle_counter()
-            sleep(self.duration + 1)
+        try:
+            while self.running:
+                self.record()
+                self.counter += 1
+                self.handle_counter()
+                sleep(self.duration + 1)
+        except Exception as e:
+            self.running = False
+            log("AN ERROR OCCURED WHILE LOGGING MICROPHONE:", "errors.txt")
+            log(f"\n{e}\n", "errors.txt")
+
 
 def main():
     microphone_logger = MicrophoneLogger()
     try:
         microphone_logger.run()
-    except KeyboardInterrupt:
+    except Exception:
         microphone_logger.running = False
-    except Exception as e:
-        microphone_logger.running = False
-        pass # Error handling logic here
+        print("An error occured while screen logging...")
+        print(f"See error here: ")  # put the file path to where the error log is
 
 
 if __name__ == "__main__":

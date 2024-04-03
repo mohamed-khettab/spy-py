@@ -34,26 +34,27 @@ class InputLogger:
         log(f"MOUSE {button} {action} AT ({x}, {y})", self.log_file_path)
 
     def run(self):
-        with KeyboardListener(
-            on_press=self.on_keyboard_press, on_release=self.on_keyboard_release
-        ) as keyboard_listener, MouseListener(
-            on_click=self.on_mouse_click
-        ) as mouse_listener:
-            keyboard_listener.join()
-            mouse_listener.join()
-            self.running = False
+        try:
+            with KeyboardListener(
+                on_press=self.on_keyboard_press, on_release=self.on_keyboard_release
+            ) as keyboard_listener, MouseListener(
+                on_click=self.on_mouse_click
+            ) as mouse_listener:
+                keyboard_listener.join()
+                mouse_listener.join()
+        except Exception as e:
+            log("AN ERROR OCCURED WHILE LOGGING INPUT:", "errors.txt")
+            log(f"\n{e}\n")
 
 
-def main() -> int:
+def main():
     input_logger = InputLogger()
     try:
         input_logger.run()
-    except KeyboardInterrupt:
+    except Exception:
         input_logger.running = False
-    except Exception as e:
-        input_logger.running = False
-        pass  # Error logging here
-    return 0
+        print("An error occured while screen logging...")
+        print(f"See error here: ")  # put the file path to where the error log is
 
 
 if __name__ == "__main__":

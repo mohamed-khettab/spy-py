@@ -1,0 +1,41 @@
+from PIL.ImageGrab import grab
+from os.path import join
+from os import _exit
+from datetime import datetime
+from time import sleep
+
+from config import LOGS_DIRECTORY_PATH, SCREENSHOT_INTERVAL
+from utils.tools import get_timestamp, log
+
+class ScreenLogger:
+    def __init__(self):
+        self.logs_directory_path = "" if not LOGS_DIRECTORY_PATH else LOGS_DIRECTORY_PATH
+        self.interval = SCREENSHOT_INTERVAL
+        self.counter = 0
+        self.running = True
+
+    def screenshot(self):
+        screenshot = grab()
+        screenshot.save(join(self.logs_directory_path, f'screenshot_{get_timestamp()}.png'))
+        screenshot.close()
+    
+    def run(self):
+        try:
+            while self.running:
+                self.screenshot()
+                sleep(self.interval)
+        except KeyboardInterrupt:
+            self.running = False
+        except Exception as e:
+            log(f'AN ERROR OCCURED WHILE SCREEN LOGGING:', 'errors.txt')
+            log(f'\n{e}\n', 'errors.txt')
+
+def main():
+    screen_logger = ScreenLogger()
+    try:
+        screen_logger.run()
+    except Exception:
+        print("An error occured while screen logging...")
+        print(f'See error here: ') # put the file path to where the error log is
+if __name__ == "__main__":
+    _exit(main())

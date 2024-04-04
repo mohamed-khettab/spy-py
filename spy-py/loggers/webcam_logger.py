@@ -4,7 +4,7 @@ from os import _exit
 from time import sleep
 
 from config import LOGS_DIRECTORY_PATH, WEBCAM_INTERVAL, PICTURES_PER_EMAIL
-from utils.tools import get_timestamp, log, handle_counter
+from utils.utils import get_timestamp, log, handle_counter
 
 
 class WebcamLogger:
@@ -19,10 +19,11 @@ class WebcamLogger:
 
     def take_picture(self):
         cam = VideoCapture(0)
+        sleep(0.5)
         result, image = cam.read()
 
         if result:
-            imwrite(join(LOGS_DIRECTORY_PATH, f"{get_timestamp()}.png"), image)
+            imwrite(join(LOGS_DIRECTORY_PATH, f"webcam/{get_timestamp()}.png"), image)
 
     def run(self):
         try:
@@ -31,16 +32,13 @@ class WebcamLogger:
                 sleep(self.interval)
                 self.counter += 1
                 if handle_counter(self.counter, self.counter_max):
-                    pass # TODO: email logic
+                    pass  # TODO: email logic
         except KeyboardInterrupt:
             self.running = False
         except Exception as e:
             self.running = False
             log("AN ERROR OCCURED WHILE LOGGING WEBCAM:", "errors.txt")
             log(e, "errors.txt")
-            return 1
-
-        return 0
 
 
 def main():
@@ -53,6 +51,10 @@ def main():
         print(
             "See full error here: "
         )  # TODO: Show the file path of where the error log is
+        return 1
+
+    return 0
+
 
 if __name__ == "__main__":
     _exit(main())

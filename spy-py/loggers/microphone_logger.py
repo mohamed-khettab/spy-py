@@ -9,7 +9,7 @@ from config import (
     MICROPHONE_INTERVAL,
     MICROPHONE_RECORDINGS_PER_EMAIL,
 )
-from utils.tools import log, get_timestamp
+from utils.utils import log, get_timestamp
 
 
 class MicrophoneLogger:
@@ -36,7 +36,9 @@ class MicrophoneLogger:
         )
         wait()
         write(
-            join(self.logs_directory_path, f"microphone_{get_timestamp()}.wav"),
+            join(
+                self.logs_directory_path, f"microphone/microphone_{get_timestamp()}.wav"
+            ),
             self.freq,
             recording,
         )
@@ -54,9 +56,6 @@ class MicrophoneLogger:
             self.running = False
             log("AN ERROR OCCURED WHILE LOGGING MICROPHONE:", "errors.txt")
             log(e, "errors.txt")
-            return 1
-
-        return 0
 
 
 def main():
@@ -67,6 +66,8 @@ def main():
         microphone_logger.running = False
         print("An error occured while logging microphone.")
         print(f"See error here: ")  # put the file path to where the error log is
+        return 1
+    return 0
 
 
 if __name__ == "__main__":

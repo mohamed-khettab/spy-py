@@ -5,7 +5,7 @@ from datetime import datetime
 from time import sleep
 
 from config import LOGS_DIRECTORY_PATH, SCREENSHOT_INTERVAL
-from utils.tools import get_timestamp, log
+from utils.utils import get_timestamp, log
 
 
 class ScreenLogger:
@@ -20,14 +20,17 @@ class ScreenLogger:
     def screenshot(self):
         screenshot = grab()
         screenshot.save(
-            join(self.logs_directory_path, f"screenshot_{get_timestamp()}.png")
+            join(
+                self.logs_directory_path,
+                f"screenshots/screenshot_{get_timestamp()}.png",
+            )
         )
         screenshot.close()
 
     def run(self):
         try:
             while self.running:
-                self.screnshot()
+                self.screenshot()
                 sleep(self.interval)
         except KeyboardInterrupt:
             self.running = False
@@ -35,9 +38,6 @@ class ScreenLogger:
             self.running = False
             log(f"AN ERROR OCCURED WHILE LOGGING SCREEN:", "errors.txt")
             log(e, "errors.txt")
-            return 1
-
-        return 0
 
 
 def main():
@@ -48,6 +48,9 @@ def main():
         screen_logger.running = False
         print("An error occured while logging screen.")
         print(f"See error here: ")  # TODO: put the file path to where the error log is
+        return 1
+
+    return 0
 
 
 if __name__ == "__main__":

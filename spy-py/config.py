@@ -16,4 +16,8 @@ SCREENSHOTS_PER_EMAIL = 30 # How many screenshots to take before an email is sen
 WEBCAM_INTERVAL = 30 # Time in seconds before each picture 
 PICTURES_PER_EMAIL = 30 # How many pictures to take before an email is sent
 
+# CLIPBOARD
+CLIPBOARD_INTERVAL = 30
+PASTES_PER_EMAIL = 1000
+
 # TODO: other constants

@@ -27,14 +27,17 @@ class ScreenLogger:
     def run(self):
         try:
             while self.running:
-                self.screenshot()
+                self.screnshot()
                 sleep(self.interval)
         except KeyboardInterrupt:
             self.running = False
         except Exception as e:
             self.running = False
-            log(f"AN ERROR OCCURED WHILE SCREEN LOGGING:", "errors.txt")
-            log(f"\n{e}\n", "errors.txt")
+            log(f"AN ERROR OCCURED WHILE LOGGING SCREEN:", "errors.txt")
+            log(e, "errors.txt")
+            return 1
+
+        return 0
 
 
 def main():
@@ -43,8 +46,8 @@ def main():
         screen_logger.run()
     except Exception:
         screen_logger.running = False
-        print("An error occured while screen logging...")
-        print(f"See error here: ")  # put the file path to where the error log is
+        print("An error occured while logging screen.")
+        print(f"See error here: ")  # TODO: put the file path to where the error log is
 
 
 if __name__ == "__main__":

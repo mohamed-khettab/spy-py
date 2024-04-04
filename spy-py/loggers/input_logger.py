@@ -42,9 +42,14 @@ class InputLogger:
             ) as mouse_listener:
                 keyboard_listener.join()
                 mouse_listener.join()
+        except KeyboardInterrupt:
+            self.running = False
         except Exception as e:
             log("AN ERROR OCCURED WHILE LOGGING INPUT:", "errors.txt")
-            log(f"\n{e}\n")
+            log(e)
+            return 1
+
+        return 0
 
 
 def main():
@@ -53,7 +58,7 @@ def main():
         input_logger.run()
     except Exception:
         input_logger.running = False
-        print("An error occured while screen logging...")
+        print("An error occured while logging input.")
         print(f"See error here: ")  # put the file path to where the error log is
 
 

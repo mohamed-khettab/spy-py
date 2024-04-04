@@ -48,10 +48,15 @@ class MicrophoneLogger:
                 self.counter += 1
                 self.handle_counter()
                 sleep(self.duration + 1)
+        except KeyboardInterrupt:
+            self.running = False
         except Exception as e:
             self.running = False
             log("AN ERROR OCCURED WHILE LOGGING MICROPHONE:", "errors.txt")
-            log(f"\n{e}\n", "errors.txt")
+            log(e, "errors.txt")
+            return 1
+
+        return 0
 
 
 def main():
@@ -60,7 +65,7 @@ def main():
         microphone_logger.run()
     except Exception:
         microphone_logger.running = False
-        print("An error occured while screen logging...")
+        print("An error occured while logging microphone.")
         print(f"See error here: ")  # put the file path to where the error log is
 
 

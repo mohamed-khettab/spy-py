@@ -7,4 +7,10 @@ def log(data: str, log_file_path: str) -> None:
 def get_timestamp():
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-# TODO: create_log_folders()
+def handle_counter(count, counter_max):
+    if count >= counter_max:
+        return True
+    else:
+        return False
+
+# TODO: create_log_folders and remove

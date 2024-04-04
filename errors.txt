@@ -1,2 +1,0 @@
-2024-04-03 19:49:34: AN ERROR OCCURED WHILE LOGGIN SCREEN:
-2024-04-03 19:49:34: 'ScreenLogger' object has no attribute 'screnshot'

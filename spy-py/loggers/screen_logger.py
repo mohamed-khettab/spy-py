@@ -1,43 +1,45 @@
 from PIL.ImageGrab import grab
 from os.path import join
-from os import _exit
+import sys
 from datetime import datetime
 from time import sleep
-
-from config import LOGS_DIRECTORY_PATH, SCREENSHOT_INTERVAL
-from utils.utils import get_timestamp, log
+from config import LOGS_DIRECTORY_PATH, SCREENSHOT_INTERVAL, SCREENSHOTS_PER_EMAIL
+from utils.utils import get_timestamp, log, handle_counter
 
 
 class ScreenLogger:
     def __init__(self):
-        self.logs_directory_path = (
-            "" if not LOGS_DIRECTORY_PATH else LOGS_DIRECTORY_PATH
-        )
-        self.interval = SCREENSHOT_INTERVAL
+        self.logs_directory_path = LOGS_DIRECTORY_PATH if LOGS_DIRECTORY_PATH else ""
+        self.error_file_path = join(LOGS_DIRECTORY_PATH, "errors.txt") if LOGS_DIRECTORY_PATH else "errors.txt"
         self.counter = 0
+        self.counter_max = SCREENSHOTS_PER_EMAIL
+        self.interval = SCREENSHOT_INTERVAL
         self.running = True
 
-    def screenshot(self):
+    def log_screen(self):
         screenshot = grab()
-        screenshot.save(
-            join(
-                self.logs_directory_path,
-                f"screenshots/screenshot_{get_timestamp()}.png",
-            )
-        )
+        screenshot.save(join(self.logs_directory_path, f"screenshots/{get_timestamp()}.png"))
         screenshot.close()
+
+    def handle_counter(self):
+        self.counter += 1
+        if handle_counter(self.counter, self.counter_max):
+            pass  # TODO: EMail logic here
 
     def run(self):
         try:
             while self.running:
-                self.screenshot()
+                self.log_screen()
+                self.handle_counter()
                 sleep(self.interval)
         except KeyboardInterrupt:
             self.running = False
         except Exception as e:
-            self.running = False
-            log(f"AN ERROR OCCURED WHILE LOGGING SCREEN:", "errors.txt")
-            log(e, "errors.txt")
+            self.log_error("AN ERROR OCCURRED WHILE LOGGING SCREEN:", e)
+
+    def log_error(self, message: str, exception: Exception) -> None:
+        log(message, self.error_file_path)
+        log(str(exception), self.error_file_path)
 
 
 def main():
@@ -45,13 +47,9 @@ def main():
     try:
         screen_logger.run()
     except Exception:
-        screen_logger.running = False
-        print("An error occured while logging screen.")
-        print(f"See error here: ")  # TODO: put the file path to where the error log is
-        return 1
-
-    return 0
+        print("An error occurred while logging screen:")
+        print(f"See full error here: {screen_logger.error_file_path}")
 
 
 if __name__ == "__main__":
-    _exit(main())
+    sys.exit(main())

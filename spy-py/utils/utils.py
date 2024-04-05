@@ -1,28 +1,28 @@
 from datetime import datetime
-from os.path import exists, join
-from os import makedirs
+from os import makedirs, remove, listdir
+from os.path import exists, join, isfile, isdir
 
 
-def log(data: str, log_file_path: str, timestamp: bool = True) -> None:
-    with open(log_file_path, "a") as f:
+def log(data: str, log_file_path: str, timestamp: bool = True, mode: str = "a") -> None:
+    with open(log_file_path, mode) as f:
         if timestamp:
             f.write(f"{get_timestamp()}: {data}\n")
         else:
             f.write(f"{data}\n")
 
 
-def get_timestamp():
+def get_timestamp() -> str:
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 
-def handle_counter(count, counter_max):
-    if count >= counter_max:
+def handle_counter(count: int, count_max: int) -> bool:
+    if count >= count_max:
         return True
-    else:
-        return False
+
+    return False
 
 
-def create_log_directories(logs_directory_path):
+def create_log_directories(logs_directory_path: str) -> None:
     if not exists(logs_directory_path):
         makedirs(logs_directory_path)
 
@@ -33,16 +33,24 @@ def create_log_directories(logs_directory_path):
             makedirs(subdirectory_path)
 
 
-# TODO: clear log file
-def clear_log_file(log_file_path):
-    pass
+def clear_log_file(log_file_path: str) -> None:
+    with open(log_file_path, "w"):
+        pass
 
 
-# TODO: Clear log folders
-def clear_log_folder(log_directory_path):
-    pass
+def clear_log_folder(log_directory_path: str) -> None:
+    if exists(log_directory_path) and isdir(log_directory_path):
+        for file_name in listdir(log_directory_path):
+            file_path = join(log_directory_path, file_name)
+            if isfile(file_path):
+                remove(file_path)
 
 
-# TODO: clear all logs
-def clear_logs(logs_directory_path):
-    pass
+def clear_logs(logs_directory_path: str) -> None:
+    if exists(logs_directory_path) and isdir(logs_directory_path):
+        for item_name in listdir(logs_directory_path):
+            item_path = join(logs_directory_path, item_name)
+            if isfile(item_path):
+                remove(item_path)
+            elif isdir(item_path):
+                clear_log_folder(item_path)

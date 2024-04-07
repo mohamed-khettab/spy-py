@@ -12,7 +12,7 @@ def log(data: str, log_file_path: str, timestamp: bool = True, mode: str = "a") 
 
 
 def get_timestamp() -> str:
-    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    return datetime.now().strftime("%B %d, %Y %I-%M-%S %p")
 
 
 def handle_counter(count: int, count_max: int) -> bool:

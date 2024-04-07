@@ -54,3 +54,7 @@ def clear_logs(logs_directory_path: str) -> None:
                 remove(item_path)
             elif isdir(item_path):
                 clear_log_folder(item_path)
+
+# TODO: Add to startup
+def add_to_startup():
+    pass

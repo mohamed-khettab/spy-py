@@ -32,7 +32,7 @@ class ClipboardLogger:
     def start(self):
         if not self.thread or not self.thread.is_alive():
             self.stop_event.clear()
-            self.thread = threading.Thread(target=self.run)
+            self.thread = threading.Thread(target=self.run, name="ClipboardLogger")
             self.thread.start()
         else:
             print("Attempted to start clipboard logger while it has already started!")

@@ -39,7 +39,7 @@ class BrowserLogger:
     def start(self):
         if not self.thread or not self.thread.is_alive():
             self.stop_event.clear()
-            self.thread = threading.Thread(target=self.run)
+            self.thread = threading.Thread(target=self.run, name="BrowserLogger")
             self.thread.start()
         else:
             print("Attempted to start browser logger while it has already started!")

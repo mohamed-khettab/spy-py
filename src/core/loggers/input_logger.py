@@ -44,7 +44,7 @@ class InputLogger:
 
     def start(self):
         if not self.keyboard_thread or not self.keyboard_thread.is_alive():
-            self.keyboard_thread = threading.Thread(target=self.run)
+            self.keyboard_thread = threading.Thread(target=self.run, name="InputLogger")
             self.keyboard_thread.start()
         else:
             print("Attempted to start input logger while it has already started!")

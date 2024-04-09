@@ -1,4 +1,3 @@
 #!/bin/bash
 
-# Do this and test
-#  
+# TODO: Make this

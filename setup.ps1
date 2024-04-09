@@ -1,7 +1,7 @@
-# I have no clue if this works
-# Will test later
-# In theory it should work
+# TODO: Rewrite this...
 
+
+<#
 if (-not (Get-Command python -ErrorAction SilentlyContinue)) {
     Write-Host "Python is not installed. Installing..."
     $pythonInstallerUrl = "https://www.python.org/ftp/python/3.9.7/python-3.9.7-amd64.exe"
@@ -50,3 +50,4 @@ Remove-Item $randomFolder -Recurse -Force
 
 Write-Host "Script completed successfully."
 exit 0
+#>

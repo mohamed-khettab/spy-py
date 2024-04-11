@@ -1,7 +1,7 @@
 import pyperclip
 import time
 
-from utils.logging_utils import log_data, log_error
+from core.utils.logging_utils import log_data, log_error
 from config.config import CLIPBOARD_LOG_INTERVAL, PASTES_PER_EMAIL
 
 

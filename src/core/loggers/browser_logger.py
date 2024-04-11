@@ -2,7 +2,7 @@ import browserhistory
 import time
 
 from config.config import BROWSER_LOG_INTERVAL, BROWSER_LOGS_PER_EMAIL
-from utils.logging_utils import log_data, log_error
+from core.utils.logging_utils import log_data, log_error
 
 
 class BrowserLogger:

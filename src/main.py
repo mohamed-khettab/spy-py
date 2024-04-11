@@ -1,17 +1,26 @@
-from core.spy import Spy
 import os
+import signal
+
+from core.spy import Spy
+
+def signal_handler(sig, frame):
+    print("Exiting...")
+    os._exit(0)
+
+signal.signal(signal.SIGINT, signal_handler)
 
 def main():
     spy = Spy()
     try:
         spy.start()
-    except KeyboardInterrupt:
-        spy.stop()
-    except Exception:
-        spy.stop()
+        signal.pause()
+    except Exception as e:
+        print("An error occurred: %s", e)
+    finally:
         spy.handle_error()
-        return 1
+        print("Spy stopped.")
+    
     return 0
 
 if __name__ == "__main__":
-    os._exit(main())
+    main()

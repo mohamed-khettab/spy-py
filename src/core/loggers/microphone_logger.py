@@ -9,7 +9,7 @@ from config.config import (
     MICROPHONE_RECORDING_INTERVAL,
     MICROPHONE_RECORDINGS_PER_EMAIL,
 )
-from utils.logging_utils import log_error, timestamp
+from core.utils.logging_utils import log_error, timestamp
 
 
 class MicrophoneLogger:

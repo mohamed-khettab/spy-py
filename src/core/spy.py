@@ -10,6 +10,7 @@ from core.utils.file_utils import create_log_directories
 from config.config import LOGS_DIRECTORY
 from core.webhook import send_error
 
+
 class Spy:
     def __init__(self):
         create_log_directories(LOGS_DIRECTORY)

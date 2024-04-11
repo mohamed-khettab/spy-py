@@ -1,4 +1,6 @@
 import os
+
+
 def create_log_directories(logs_directory_path: str) -> None:
     if not os.path.exists(logs_directory_path):
         os.makedirs(logs_directory_path)

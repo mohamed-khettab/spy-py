@@ -1,1 +1,3 @@
-# TODO: Make this
+class WebcamLogger:
+    def __init__(self):
+        self.running = False

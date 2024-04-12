@@ -18,9 +18,8 @@ def main():
         spy.start()
         signal.pause()
     except Exception as e:
-        print("An error occurred: %s", e)
+        spy.handle_error(e)
     finally:
-        spy.handle_error()
         print("Spy stopped.")
 
     return 0

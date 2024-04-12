@@ -14,7 +14,7 @@ from core.utils.logging_utils import log_error, timestamp
 
 class MicrophoneLogger:
     def __init__(self):
-        self.log_directory = os.path.join(LOGS_DIRECTORY, "microphone/")
+        self.log_directory = os.path.join(LOGS_DIRECTORY, "microphone")
         self.interval = MICROPHONE_RECORDING_INTERVAL
         self.running = True
 

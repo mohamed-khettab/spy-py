@@ -8,7 +8,7 @@ from core.utils.logging_utils import timestamp, log_error
 
 class ScreenLogger:
     def __init__(self):
-        self.logs_directory = os.path.join(LOGS_DIRECTORY, "screenshots/")
+        self.logs_directory = os.path.join(LOGS_DIRECTORY, "screenshots")
         self.interval = SCREENSHOT_INTERVAL
         self.running = True
 

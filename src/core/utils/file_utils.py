@@ -33,3 +33,10 @@ def clear_logs(logs_directory_path: str) -> None:
                 os.remove(item_path)
             elif os.path.isdir(item_path):
                 clear_log_folder(item_path)
+
+def clear_files_in_directory(directory_path: str) -> None:
+    if os.path.exists(directory_path) and os.path.isdir(directory_path):
+        for item_name in os.listdir(directory_path):
+            item_path = os.path.join(directory_path, item_name)
+            if os.path.isfile(item_path):
+                os.remove(item_path)

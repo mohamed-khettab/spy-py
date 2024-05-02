@@ -25,6 +25,7 @@ class MicrophoneLogger:
         wavfile.write(
             os.path.join(self.log_directory_path, f"{self.counter}.wav"), 44100, recording
         )
+        log_info(f"Logged microphone recording to {os.path.join(self.log_directory_path, f'{self.counter}.wav')}")
 
     def increment_and_check_counter(self):
         self.counter += 1

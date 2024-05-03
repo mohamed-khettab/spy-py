@@ -14,36 +14,12 @@ from utils.file_utils import create_log_directories
 from utils.logging_utils import log_error, log_info
 from utils.webhook_utils import send_message
 
-'''
-def add_to_startup():
-    system = platform.system()
-    current_file_path = os.path.realpath(__file__)
-    startup_script = f"python3 {current_file_path}\n"
-
-    if system == "Windows":
-        startup_folder = os.path.join(
-            os.getenv("APPDATA"), "Microsoft\\Windows\\Start Menu\\Programs\\Startup"
-        )
-        startup_file = os.path.join(startup_folder, "start_main.bat")
-        with open(startup_file, "w") as file:
-            file.write(startup_script)
-    elif system == "Linux":
-        startup_file = os.path.expanduser("~/.config/autostart/start_main.sh")
-        with open(startup_file, "w") as file:
-            file.write(startup_script)
-        os.system(f"chmod +x {startup_file}")
-    elif system == "Darwin":
-        startup_file = os.path.expanduser("~/Library/LaunchAgents/start_main.sh")
-        with open(startup_file, "w") as file:
-            file.write(startup_script)
-        os.system(f"chmod +x {startup_file}")
-
-    log_info(f"Added to startup: {startup_file}.")
-'''
 
 def main():
     system_info = platform.uname()
-    send_message(f"Started logging from `{system_info.node}` running `{system_info.system} {system_info.release}`.")
+    send_message(
+        f"Started logging from `{system_info.node}` running `{system_info.system} {system_info.release}`."
+    )
 
     try:
         create_log_directories()

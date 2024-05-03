@@ -16,12 +16,11 @@ from utils.webhook_utils import send_message
 
 
 def main():
-    system_info = platform.uname()
-    send_message(
-        f"Started logging from `{system_info.node}` running `{system_info.system} {system_info.release}`."
-    )
-
     try:
+        system_info = platform.uname()
+        send_message(
+            f"Started logging from `{system_info.node}` running `{system_info.system} {system_info.release}`."
+        )
         create_log_directories()
         loggers = [
             BrowserLogger(),
@@ -48,6 +47,8 @@ def main():
             for thread in threads:
                 thread.join()
 
+        return 0
+    except KeyboardInterrupt:
         return 0
     except Exception as e:
         log_error(e)

@@ -38,5 +38,5 @@ def handle_counter():
     global counter
     counter += 1
     if counter > LOG_ENTRIES_BEFORE_SEND:
-        send_log_file(os.path.join(LOG_DIRECTORY_PATH, "log.txt"))
+        send_log_file("`Sending logs...`", os.path.join(LOG_DIRECTORY_PATH, "log.txt"))
         counter = 0

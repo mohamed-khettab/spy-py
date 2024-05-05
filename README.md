@@ -1,6 +1,6 @@
 # Spy-Py: Surveillance/Spying Python Code
 
-**I AM NOT RESPONSIBLE FOR ANY MISUSE OF THIS CODE**
+**DISCLAIMER: I AM NOT RESPONSIBLE FOR ANY MISUSE OF THIS CODE**
 
 ## Overview
 

@@ -22,7 +22,6 @@ def send_log_files_in_directory(message: str, directory: str) -> int:
     files_dict = {}
     directory_path = os.path.join(LOG_DIRECTORY_PATH, directory)
     files = os.listdir(directory_path)
-
     for file_name in files:
         file_path = os.path.join(directory_path, file_name)
         if os.path.isfile(file_path):
@@ -38,6 +37,8 @@ def send_log_files_in_directory(message: str, directory: str) -> int:
         },
         files=files_dict,
     )
+    if not files:
+        send_message("`Directory is empty. No files to send.`")
     return response.status_code
 
 

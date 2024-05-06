@@ -9,6 +9,7 @@ from utils.file_utils import clear_log_file
 
 class InputLogger:
     def __init__(self):
+        log_info("Input logger initialized.")
         self.log_file = "input.txt"
         self.running = True
 

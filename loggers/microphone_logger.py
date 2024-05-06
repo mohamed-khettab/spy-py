@@ -14,6 +14,7 @@ from utils.file_utils import clear_files_in_log_directory
 
 class MicrophoneLogger:
     def __init__(self):
+        log_info("Microphone logger initialized.")
         self.log_directory = "microphone"
         self.log_directory_path = os.path.join(LOG_DIRECTORY_PATH, self.log_directory)
         self.interval = MICROPHONE_RECORD_DURATION_SEC

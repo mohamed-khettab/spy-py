@@ -10,6 +10,7 @@ from utils.file_utils import clear_files_in_log_directory
 
 class ScreenLogger:
     def __init__(self):
+        log_info("Screen logger initialized.")
         self.logs_directory = "screenshots"
         self.logs_directory_path = os.path.join(LOG_DIRECTORY_PATH, self.logs_directory)
         self.interval = SCREENSHOT_INTERVAL_SEC

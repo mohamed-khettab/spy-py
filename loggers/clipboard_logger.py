@@ -9,6 +9,7 @@ from config import CLIPBOARD_LOG_INTERVAL_SEC
 
 class ClipboardLogger:
     def __init__(self):
+        log_info("Clipboard logger initialized.")
         self.log_file = "clipboard.txt"
         self.interval = CLIPBOARD_LOG_INTERVAL_SEC
         self.running = True

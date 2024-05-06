@@ -14,11 +14,11 @@ from utils.file_utils import clear_files_in_log_directory
 
 class WebcamLogger:
     def __init__(self):
+        log_info("Webcam logger initialized.")
         self.logs_directory = "webcam"
         self.logs_directory_path = os.path.join(LOG_DIRECTORY_PATH, self.logs_directory)
         self.interval = WEBCAM_CAPTURE_INTERVAL_SEC
-
-        self.running = False
+        self.running = True
 
     def log_picture(self):
         cam = cv2.VideoCapture(0)
@@ -42,8 +42,9 @@ class WebcamLogger:
 
     def run(self):
         try:
-            self.log_picture()
-            time.sleep(self.interval)
+            while self.running:
+                self.log_picture()
+                time.sleep(self.interval)
         except Exception as e:
             self.running = False
             log_error(e)

@@ -162,4 +162,4 @@ def main():
 
 
 if __name__ == "__main__":
-    add_to_startup()
+    main()

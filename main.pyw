@@ -55,20 +55,20 @@ def start_loggers(loggers):
 
 def startup_message():
     ip = requests.get("https://checkip.amazonaws.com").text.strip()
-    message = f"Started logging on {platform.uname().system} {platform.uname().release} ({platform.uname().version}) from {platform.uname().node} at IP: {ip}"
+    message = f"Started logging on `{platform.uname().system} {platform.uname().release} ({platform.uname().version})` from `{platform.uname().node}` at IP: `{ip}`"
     send_message(message)
 
 
 def exit_message():
     send_message(
-        f"Logging stopped from {platform.uname().node}. Logs are available at {LOG_DIRECTORY_PATH}"
+        f"Logging stopped from `{platform.uname().node}.` Logs are available at `{LOG_DIRECTORY_PATH}`"
     )
 
 atexit.register(exit_message)
 
 
 def panic():
-    send_message(f"PANIC TRIGGERED FROM {platform.uname().node}!")
+    send_message(f"PANIC TRIGGERED FROM `{platform.uname().node}!`")
     send_all_logs(create_loggers())
     os.rmdir(LOG_DIRECTORY_PATH)
     os.rmdir(os.path.dirname(os.path.realpath(__file__)))

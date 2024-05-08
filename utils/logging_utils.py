@@ -12,15 +12,15 @@ def log_to_file(log_file: str, data: str, mode="a") -> None:
 
 
 def log_info(info: str) -> None:
-    print(f"[INFO]: {info}")
+    print(f"[INFO] {timestamp()}: {info}")
     with open(os.path.join(LOG_DIRECTORY_PATH, "log.txt"), "a") as f:
-        f.write(f"[INFO]: {info}\n")
+        f.write(f"[INFO] {timestamp()}: {info}\n")
 
 
 def log_warning(warning):
-    print(f"[WARNING]: {warning}")
+    print(f"[WARNING] {timestamp()}: {warning}")
     with open(os.path.join(LOG_DIRECTORY_PATH, "log.txt"), "a") as f:
-        f.write(f"[WARNING]: {warning}\n")
+        f.write(f"[WARNING] {timestamp()}: {warning}\n")
 
 
 import traceback
@@ -31,10 +31,10 @@ def log_error(error):
     error_message = str(error)
     error_traceback = traceback.format_exc()
 
-    print(f"[ERROR]: {error_type}: {error_message}")
+    print(f"[ERROR] {timestamp()}: {error_type}: {error_message}")
     print(f"Traceback:\n{error_traceback}")
     with open(os.path.join(LOG_DIRECTORY_PATH, "log.txt"), "a") as f:
-        f.write(f"[ERROR]: {error_type}: {error_message}\n")
+        f.write(f"[ERROR] {timestamp()}: {error_type}: {error_message}\n")
         f.write(f"Traceback:\n{error_traceback}\n")
 
     send_log_file(
@@ -48,4 +48,4 @@ def send_logs():
 
 
 def timestamp():
-    return datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    return datetime.datetime.now().strftime("%a_%b_%d_%I-%M-%S_%p")

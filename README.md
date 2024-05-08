@@ -18,3 +18,5 @@ Surveillance/spying app written in Python. I did not have any ill intent when wr
 
 5. Run main.py as administrator and try it out!
 
+## TODO 
+- [ ] Add to startup on Linux

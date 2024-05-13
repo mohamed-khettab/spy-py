@@ -64,6 +64,7 @@ def exit_message():
         f"Logging stopped from `{platform.uname().node}.` Logs are available at `{LOG_DIRECTORY_PATH}`"
     )
 
+
 atexit.register(exit_message)
 
 

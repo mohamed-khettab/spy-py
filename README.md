@@ -1,22 +1,29 @@
-# Spy-Py: Surveillance/Spying Python Code
+# spy-py: A Python-based Monitoring Tool
 
-**DISCLAIMER: I AM NOT RESPONSIBLE FOR ANY MISUSE OF THIS CODE**
+## Disclaimer
 
-## Overview
-
-Surveillance/spying app written in Python. I did not have any ill intent when writing this code and I just thought it would be a fun project. Works perfectly on Windows. Works on Mac but is essentially useless without admin privileges. Not tested on Linux, but should work although it will not add to startup (Working on that).
+This code is intended for educational and ethical purposes only. The author is not responsible for any misuse of this code. Please use responsibly and within the bounds of the law.
 
 ## Usage
 
-1. Clone or download the repository
+Follow these steps to start spying:
 
-2. Install requirements.txt
+1. Clone the repository to your local machine
+2. Create a Discord webhook and copy the link
+3. Install the necessary dependencies by running `pip install -r requirements.txt`
+4. Run `setup.py` with administrator privileges to set up the tool
+5. Run `main.py` with administrator privileges to start the tool
 
-3. Make a discord webhook that you will put in setup.py
+## Compatibility
 
-4. Run setup.py as administrator (You can run it without administrator but the program may not work properly)
+- **Windows**: Fully supported
+- **Mac**: Supported, but running with administrator privileges is highly recommended
+- **Linux**: Not tested
 
-5. Run main.py as administrator and try it out!
+## Contributing
 
-## TODO 
-- [ ] Add to startup on Linux
+Feel free to contribute by opening a pull request or an issue.
+
+## License
+
+This project is licensed under the MIT License. See the `LICENSE` file for more details.

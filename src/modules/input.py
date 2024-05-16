@@ -55,14 +55,14 @@ class InputLogger:
     def log_keyboard_press(self, key):
         log_to_file(
             self.log_file,
-            f"[{timestamp()} ACTIVE WINDOW: {self.get_active_window()}]: KEY {key} PRESSED",
+            f"[{timestamp()} | ACTIVE WINDOW: {self.get_active_window()}]: KEY {key} PRESSED",
         )
         return self.running
 
     def log_keyboard_release(self, key):
         log_to_file(
             self.log_file,
-            f"[{timestamp()} ACTIVE WINDOW: {self.get_active_window()}]: KEY {key} RELEASED",
+            f"[{timestamp()} | ACTIVE WINDOW: {self.get_active_window()}]: KEY {key} RELEASED",
         )
         return self.running
 
@@ -70,7 +70,7 @@ class InputLogger:
         action = "PRESSED" if pressed else "RELEASED"
         log_to_file(
             self.log_file,
-            f"[{timestamp()} ACTIVE WINDOW: {self.get_active_window()}]: MOUSE {action} {str(button)} AT {x}, {y}",
+            f"[{timestamp()} | ACTIVE WINDOW: {self.get_active_window()}]: MOUSE {action} {str(button)} AT {x}, {y}",
         )
         return self.running
 

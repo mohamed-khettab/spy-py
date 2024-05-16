@@ -23,9 +23,6 @@ def log_warning(warning):
         f.write(f"[WARNING] {timestamp()}: {warning}\n")
 
 
-import traceback
-
-
 def log_error(error):
     error_type = type(error).__name__
     error_message = str(error)
@@ -48,4 +45,4 @@ def send_logs():
 
 
 def timestamp():
-    return datetime.datetime.now().strftime("%a_%b_%d_%I-%M-%S_%p")
+    return datetime.datetime.now().strftime("%b %d, %Y at %I-%M-%S %p")

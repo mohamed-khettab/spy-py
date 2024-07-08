@@ -2,8 +2,10 @@
 # Running this file directly will not work as of right now. Please see line 58 to understand why.
 # Feel free to modify this project as you wish. Contributions are always welcome.
 
-# TODO: Make all of the loggers actually work
-# TODO: Test on vm and see if it works
+# TODO Make all of the loggers actually work
+# TODO Test on vm and see if it works
+# TODO make requirements.txt
+# TODO code is currently broken, fix it
 import tempfile
 import os
 import threading

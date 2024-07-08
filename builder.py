@@ -86,7 +86,6 @@ def assemble_source(selected_loggers):
         with open("spy-py-temp/assembled.py", "w", encoding="utf-8") as f:
             for imp in sorted(imports):
                 f.write(imp + "\n")
-            f.write("\nis_built = True\n\n")
             f.write(utils_content)
             f.write("\n")
             f.write(loggers_content)

@@ -2,26 +2,32 @@
 echo "spy-py"
 
 # Check if Python is installed
-if ! command -v python &> /dev/null
-then
-    echo "Python is not installed. Please install Python 3.6 or later."
-    read -p "Press enter to continue"
-    exit 1
+if ! command -v python &> /dev/null; then
+    if ! command -v python3 &> /dev/null; then
+        echo "Python is not installed. Please install Python 3.6 or higher."
+        exit 1
+    else
+        python=python3
+    fi
+else
+    python=python
 fi
 
 echo "Initializing virtual environment..."
-python -m venv Spy-Py
+$python -m venv Spy-Py
+
 
 echo "Installing required packages..."
 source Spy-Py/bin/activate
 pip install -r requirements.txt
+
 deactivate
 
 clear
 
-python builder.py
+$python builder.py
 
-clear
+echo ""
 
 echo "########################################################"
 echo "#                                                      #"
@@ -32,4 +38,5 @@ echo "#     note that I am not liable for any actions you    #"
 echo "#   choose to take with it. Thanks for using Spy-py!   #"
 echo "#                                                      #"
 echo "########################################################"
-read -p "Press enter to continue"
+echo ""
+read -p "Press any key to exit..."

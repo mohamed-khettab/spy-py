@@ -3,9 +3,6 @@
 # Feel free to modify this project as you wish. Contributions are always welcome.
 
 # TODO Make all of the loggers actually work
-# TODO Test on vm and see if it works
-# TODO make requirements.txt
-# TODO code is currently broken, fix it
 import tempfile
 import os
 import threading

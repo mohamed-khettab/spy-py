@@ -1,9 +1,11 @@
 from utils import *
-
+import time
 
 class WebcamLogger:
     def __init__(self):
-        print("Webcam Logger initialized")
-
+        while True:
+            print("Webcam Logger initialized")
+            time.sleep(1)
+            
     def start(self):
         pass

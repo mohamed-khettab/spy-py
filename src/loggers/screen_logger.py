@@ -1,9 +1,12 @@
 from utils import *
-
+import time
 
 class ScreenLogger:
     def __init__(self):
-        print("Screen Logger initialized")
+        while True:
+            print("Screen Logger initialized")
+            time.sleep(1)   
 
+            
     def start(self):
         pass

@@ -1,9 +1,11 @@
 from utils import *
-
+import time
 
 class MicrophoneLogger:
     def __init__(self):
-        print("Microphone Logger initialized")
-
+        while True:
+            print("Microphone Logger initialized")
+            time.sleep(1)
+            
     def start(self):
         pass

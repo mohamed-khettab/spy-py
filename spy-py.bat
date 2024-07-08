@@ -10,7 +10,7 @@ if errorlevel 1 (
 
 echo Initializing virtual environment...
 python -m venv Spy-Py
-
+call Spy-Py/Scripts/activate 
 echo Installing required packages...
 pip install -r requirements.txt
 

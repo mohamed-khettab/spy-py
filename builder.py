@@ -163,7 +163,7 @@ def pack_source(exe_name):
     try:
         os.rename("spy-py-temp/prepared.py", f"spy-py-temp/{exe_name}.py")
        
-        if platform.system == "Windows":
+        if platform.system() == "Windows":
             venv_activate_command = "Spy-Py\\Scripts\\activate"
         else:
             venv_activate_command = "source Spy-Py/bin/activate"

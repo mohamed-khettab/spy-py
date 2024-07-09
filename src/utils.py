@@ -1,23 +1,11 @@
 import os
 import ctypes
-import platform
 import sys
 import requests
-import tkinter.messagebox
-
-
-def get_platform():
-    return platform.system()
-
+import tempfile
 
 def is_admin():
-    if get_platform() == "Windows":
-        return ctypes.windll.shell32.IsUserAnAdmin() != 0
-    else:
-        try:
-            return os.getuid() == 0
-        except AttributeError:
-            return False
+    return ctypes.windll.shell32.IsUserAnAdmin()
 
 
 def send_webhook(url, message=None, file=None):
@@ -32,10 +20,12 @@ def send_webhook(url, message=None, file=None):
 def is_exe():
     return getattr(sys, "frozen", False)
 
+def get_logs_path(software_dir_name):
+    return os.path.join(tempfile.gettempdir(), software_dir_name)
 
 def display_error_message(title, message):
-    if get_platform() == "Windows":
-        ctypes.windll.user32.MessageBoxW(0, message, title, 0x10)
-    else:
-        tkinter.messagebox.showerror(title=title, message=message)
-        # TODO find a better looking error msg
+    ctypes.windll.user32.MessageBoxW(0, message, title, 0x10)
+
+
+def hide_dir(path):
+    ctypes.windll.kernel32.SetFileAttributesW(path, 2)

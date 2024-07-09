@@ -193,11 +193,11 @@ def pack_source(exe_name):
 def cleanup(exe_name):
     global ERROR_OCCURRED
     try:
-        shutil.rmtree("spy-py-temp")
+        shutil.rmtree("spy-py-temp", ignore_errors=True)
         if os.path.exists(".pyarmor"):
-            shutil.rmtree(".pyarmor")
+            shutil.rmtree(".pyarmor", ignore_errors=True)
         if os.path.exists("Spy-Py"):
-            shutil.rmtree("Spy-Py")
+            shutil.rmtree("Spy-Py", ignore_errors=True)
         if os.path.exists(f"{exe_name}.spec"):
             os.remove(f"{exe_name}.spec")
     except Exception as e:

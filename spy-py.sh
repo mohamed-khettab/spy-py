@@ -22,7 +22,6 @@ source Spy-Py/bin/activate
 pip install -r requirements.txt
 
 deactivate
-
 clear
 
 $python builder.py

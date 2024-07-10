@@ -4,6 +4,7 @@ import sys
 import requests
 import tempfile
 
+
 def is_admin():
     return ctypes.windll.shell32.IsUserAnAdmin()
 
@@ -18,11 +19,14 @@ def send_webhook(url, content=None, file=None):
     else:
         requests.post(url, json={"content": content})
 
+
 def is_exe():
     return getattr(sys, "frozen", False)
 
+
 def get_logs_path(software_dir_name):
     return os.path.join(tempfile.gettempdir(), software_dir_name)
+
 
 def display_error_message(title, message):
     ctypes.windll.user32.MessageBoxW(0, message, title, 0x10)

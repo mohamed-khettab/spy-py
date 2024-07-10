@@ -17,11 +17,11 @@ call Spy-Py/Scripts/activate
 echo Installing required packages...
 pip install -r requirements.txt
 
-
 cls
 
 python builder.py
 
+echo.
 echo ########################################################
 echo #                                                      #
 echo #  Spy-Py build complete. If you find this project     #

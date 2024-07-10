@@ -32,6 +32,5 @@ echo #   choose to take with it. Thanks for using Spy-py!   #
 echo #                                                      #
 echo ########################################################
 echo.
-echo "Press any key to exit..."
 pause
 exit /b

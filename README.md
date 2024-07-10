@@ -8,30 +8,44 @@ This code is intended for educational and ethical purposes only. The author is n
 
 Follow these steps to start spying:
 
-1. Clone the repository to your local machine
-2. Create a Discord webhook and copy the link
-3. Install the necessary dependencies by running `pip install -r requirements.txt`
-4. Go into the `src` directory
-5. Run `setup.py` with administrator privileges to set up the tool
-6. Run `main.py` with administrator privileges to start the tool
+1. **Clone the repository**: 
+
+git clone <repository-url>
+
+Replace `<repository-url>` with the actual URL of your repository.
+
+2. **Create a Discord webhook**:
+- Go to your Discord server settings.
+- Navigate to Integrations > Webhooks.
+- Create a new webhook and copy the webhook URL.
+
+3. **Run spy-py.bat**:
+- Open a terminal (PowerShell or CMD).
+- Navigate to the cloned repository.
+- Run the following command:
+  ```
+  .\spy-py.bat
+  ```
+This will start the setup process. Follow the on-screen instructions.
+
+4. **Check the `dist` directory**:
+- Once setup is complete, check the `dist` directory.
+- You will find your executable file there.
+
+5. **Distribute the executable**:
+- Distribute the executable as needed.
 
 ## Compatibility
 
-- **Windows**: Fully supported
-- **Mac**: Supported, but running with administrator privileges is highly recommended
-- **Linux**: Not tested
+Unfortunately, this project currently only supports Windows. Linux/Mac support will be added in the near future.
 
-## Screenshots
-
-Here are some screenshots to show it works :)
-
-<img width="940" alt="Screenshot 1" src="https://github.com/mohamed-khettab/spy-py/assets/93957717/45b72312-76a4-4986-9250-0fe7e0e9dffc">
-<img width="938" alt="Screenshot 2" src="https://github.com/mohamed-khettab/spy-py/assets/93957717/a9e932cf-b9aa-4d2c-a806-416caf5ed26e">
-
+If you are on Linux and want to create an executable, consider using a Windows virtual machine.
 
 ## Contributing
 
-Feel free to contribute by opening a pull request or an issue.
+Feel free to contribute by opening an issue or a pull request.
+
+- Pull requests are welcome!
 
 ## License
 

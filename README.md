@@ -4,13 +4,15 @@
 
 This code is intended for educational and ethical purposes only. The author is not responsible for any misuse of this code. Please use responsibly and within the bounds of the law.
 
+---
+
 ## Usage
 
 Follow these steps to start spying:
 
 1. **Clone the repository**: 
 
-git clone `<repository-url>`
+`git clone <repository-url>`
 
 Replace `<repository-url>` with the actual URL of your repository.
 
@@ -35,11 +37,15 @@ This will start the setup process. Follow the on-screen instructions.
 5. **Distribute the executable**:
 - Distribute the executable as needed.
 
+---
+
 ## Compatibility
 
 Unfortunately, this project currently only supports Windows. Linux/Mac support will be added in the near future.
 
 If you are on Linux and want to create an executable, consider using a Windows virtual machine.
+
+---
 
 ## Contributing
 

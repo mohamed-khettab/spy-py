@@ -1,58 +1,54 @@
-# spy-py: A Python-based Monitoring Tool
+# spy-py: A Python-based Monitoring Tool 🕵️
 
-## Disclaimer
+## ❗ Disclaimer
 
-This code is intended for educational and ethical purposes only. The author is not responsible for any misuse of this code. Please use responsibly and within the bounds of the law.
+This code is intended for **educational and ethical purposes only**. The author is not responsible for any misuse of this code. Please use responsibly and within the bounds of the law.
 
----
-
-## Usage
+## 🚀 Usage
 
 Follow these steps to start spying:
 
 1. **Clone the repository**: 
 
-`git clone <repository-url>`
+    ```bash
+    git clone <repository-url>
+    ```
 
-Replace `<repository-url>` with the actual URL of your repository.
+    Replace `<repository-url>` with the actual URL of your repository.
 
 2. **Create a Discord webhook**:
-- Go to your Discord server settings.
-- Navigate to Integrations > Webhooks.
-- Create a new webhook and copy the webhook URL.
+    - Go to your Discord server settings.
+    - Navigate to **Integrations > Webhooks**.
+    - Create a new webhook and copy the webhook URL.
 
 3. **Run spy-py.bat**:
-- Open a terminal (PowerShell or CMD).
-- Navigate to the cloned repository.
-- Run the following command:
-  ```
-  .\spy-py.bat
-  ```
-This will start the setup process. Follow the on-screen instructions.
+    - Open a terminal (PowerShell or CMD).
+    - Navigate to the cloned repository.
+    - Run the following command:
+      ```bash
+      .\spy-py.bat
+      ```
+      This will start the setup process. Follow the on-screen instructions.
 
 4. **Check the `dist` directory**:
-- Once setup is complete, check the `dist` directory.
-- You will find your executable file there.
+    - Once setup is complete, check the `dist` directory.
+    - You will find your executable file there.
 
 5. **Distribute the executable**:
-- Distribute the executable as needed.
+    - Distribute the executable as needed.
 
----
+## 💻 Compatibility
 
-## Compatibility
+Unfortunately, this project currently only supports **Windows**. Linux/Mac support will be added in the near future.
 
-Unfortunately, this project currently only supports Windows. Linux/Mac support will be added in the near future.
+> 📝 **Note**: If you are on Linux and want to create an executable, consider using a Windows virtual machine.
 
-If you are on Linux and want to create an executable, consider using a Windows virtual machine.
-
----
-
-## Contributing
+## 🤝 Contributing
 
 Feel free to contribute by opening an issue or a pull request.
 
-- Pull requests are welcome!
+- **Pull requests are welcome!**
 
-## License
+## 📄 License
 
-This project is licensed under the MIT License. See the `LICENSE` file for more details.
+This project is licensed under the **MIT License**. See the `LICENSE` file for more details.

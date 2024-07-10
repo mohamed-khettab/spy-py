@@ -10,7 +10,7 @@ Follow these steps to start spying:
 
 1. **Clone the repository**: 
 
-git clone <repository-url>
+git clone `<repository-url>`
 
 Replace `<repository-url>` with the actual URL of your repository.
 

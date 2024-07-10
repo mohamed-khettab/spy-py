@@ -15,7 +15,7 @@ class MicrophoneLogger:
     def log_microphone(self):
         try:
             recording = sd.rec(
-                self.interval * 44100, samplerate=44100, channels=2, dtype="int16"
+                int(self.interval * 44100), samplerate=44100, channels=1, dtype="int16"
             )
             sd.wait()
             wav.write(os.path.join(self.logs_path, "microphone.wav"), 44100, recording)

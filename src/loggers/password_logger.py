@@ -65,4 +65,4 @@ class PasswordLogger:
 
     def start(self):
         self.log_passwords()
-        print("Passwords logged")
+        return

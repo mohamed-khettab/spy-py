@@ -5,6 +5,7 @@
 #                                                                   #
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#
 
+# TODO Add icon option for the executable
 import os
 import re
 import requests

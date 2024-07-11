@@ -1,6 +1,6 @@
-# spy-py: A Python-based Monitoring Tool 🕵️
+# spy-py: A Python-based Monitoring Tool
 
-## Disclaimer
+## ❗ Disclaimer
 
 This code is intended for **educational and ethical purposes only**. The author is not responsible for any misuse of this code. Please use responsibly and within the bounds of the law.
 

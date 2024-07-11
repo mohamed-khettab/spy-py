@@ -37,6 +37,8 @@ Follow these steps to start spying:
 5. **Distribute the executable**:
     - Distribute the executable as needed.
 
+> 📝 **Note**: If you would like to run SpyPy without building, manually change the values in main.py and run it.
+
 ## 💻 Compatibility
 
 Unfortunately, this project currently only supports **Windows**. Linux/Mac support will be added in the near future.

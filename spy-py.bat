@@ -11,6 +11,8 @@ if errorlevel 1 (
     )
 )
 
+pip install requests >nul 2>&1
+
 echo Initializing virtual environment...
 python -m venv Spy-Py
 call Spy-Py/Scripts/activate 

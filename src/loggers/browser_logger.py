@@ -17,6 +17,7 @@ class BrowserLogger:
         if not os.path.exists(self.log_file):
             with open(self.log_file, "w") as f:
                 f.write("Browser History:\n\n")
+                f.close()
         try:
             browser_history = bh.get_browserhistory()
             if browser_history:

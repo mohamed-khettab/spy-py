@@ -12,7 +12,7 @@ class WebcamLogger:
         self.log_file = os.path.join(
             get_logs_path(self.software_dir_name), "webcam_log.png"
         )
-        self.interval = 300
+        self.interval = 10
 
     def log_webcam(self):
         try:

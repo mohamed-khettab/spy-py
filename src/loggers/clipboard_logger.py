@@ -19,6 +19,7 @@ class ClipboardLogger:
         if not os.path.exists(self.log_file):
             with open(self.log_file, "w") as f:
                 f.write("Clipboard History:\n\n")
+                f.close()
         try:
             copied = pyperclip.paste()
             if copied == self.last_copied:

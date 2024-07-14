@@ -9,7 +9,7 @@ def is_admin():
     return ctypes.windll.shell32.IsUserAnAdmin()
 
 
-# send embeds to discord webhook
+# TODO potentially send embeds instead of code blocks cuz its cooler
 def send_webhook(url, content=None, file=None):
     if not url:
         print("ERROR: ATTEMPTED TO SEND WEBHOOK WITHOUT URL")

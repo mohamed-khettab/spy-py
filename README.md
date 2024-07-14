@@ -2,6 +2,8 @@
 
 ## ❗ Disclaimer
 
+Although this project does currently work, it is still being perfected and is not a finished product. Feel free to contribute!
+
 This code is intended for **educational and ethical purposes only**. The author is not responsible for any misuse of this code. Please use responsibly and within the bounds of the law.
 
 ## 🚀 Usage

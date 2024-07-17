@@ -1,12 +1,10 @@
 # spy-py: A Python-based Monitoring Tool
 
-## ❗ Disclaimer
-
-Although this project does currently work, it is still being perfected and is not a finished product. Feel free to contribute!
+## Disclaimer
 
 This code is intended for **educational and ethical purposes only**. The author is not responsible for any misuse of this code. Please use responsibly and within the bounds of the law.
 
-## 🚀 Usage
+## Usage
 
 Follow these steps to start spying:
 
@@ -39,20 +37,20 @@ Follow these steps to start spying:
 5. **Distribute the executable**:
     - Distribute the executable as needed.
 
-> 📝 **Note**: If you would like to run SpyPy without building, manually change the values in main.py and run it.
+> **Note**: If you would like to run SpyPy without building, manually change the values in main.py and run it.
 
-## 💻 Compatibility
+## Compatibility
 
 Unfortunately, this project currently only supports **Windows**. Linux/Mac support will be added in the near future.
 
-> 📝 **Note**: If you are on Linux and want to create an executable, consider using a Windows virtual machine.
+> **Note**: If you are on Linux and want to create an executable, consider using a Windows virtual machine.
 
-## 🤝 Contributing
+## Contributing
 
 Feel free to contribute by opening an issue or a pull request.
 
 - **Pull requests are welcome!**
 
-## 📄 License
+## License
 
 This project is licensed under the **MIT License**. See the `LICENSE` file for more details.
